@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper {
-    UserDO getUser(UserDTO userDTO);
+    UserDO getUser(String userId);
 }

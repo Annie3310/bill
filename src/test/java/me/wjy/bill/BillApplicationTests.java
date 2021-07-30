@@ -21,15 +21,7 @@ class BillApplicationTests {
 
     @Test
     void contextLoads() throws ServiceException {
-        UserDTO userDTO = UserDTO.builder().password("L6isEeFgjzj5yHC2WXGw").build();
-        userDTO.setUserId("846a4e9f-91e4-42a7-ab20-391417af3546");
-        UserDO user = userService.getUser(userDTO);
-        System.out.println(LocalDate.now());
-        Assert.assertEquals(UserDO
-                .builder()
-                .userId("846a4e9f-91e4-42a7-ab20-391417af3546")
-                .password("5a55e90d655d0d5cae6a5b082413aff138f0ed3166973c2de859a9de825ae44d")
-                .build(), user);
+
     }
 
     @Test

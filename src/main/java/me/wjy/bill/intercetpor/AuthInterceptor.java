@@ -30,8 +30,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (user != null) {
             return true;
         }
-        response.sendRedirect("/error/auth");
         return false;
-
     }
 }

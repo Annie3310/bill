@@ -5,6 +5,5 @@
         select id, user_id, name, password
         from user
         where user_id = #{userId}
-          and password = #{password};
     </select>
 </mapper>

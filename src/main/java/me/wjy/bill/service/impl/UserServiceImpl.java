@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * @author 王金义
  */
@@ -28,13 +30,17 @@ public class UserServiceImpl implements UserService {
     public UserDO getUser(UserDTO userDTO) throws ServiceException {
         // TODO 只用 userId 查用户, 再在 Service 层验证密码
         logger.info("getUser 获取用户");
-        userDTO.setPassword(SHA256.SHA256(userDTO.getPassword()));
-        UserDO user = userMapper.getUser(userDTO);
-        if (user == null) {
+        String userDTOPassword = userDTO.getPassword();
+        userDTO.setPassword(SHA256.SHA256(userDTOPassword));
+        UserDO user = userMapper.getUser(userDTO.getUserId());
+        userDTOPassword = userDTO.getPassword();
+        String userPassword = user.getPassword();
+        if (!Objects.equals(userPassword, userDTOPassword)) {
             logger.warn("getUser 未获取到用户");
-            throw new ServiceException(ErrorCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode()
-                    , "认证失败, 用户名或密码不正确, 或用户不存在",
-                    null);
+            throw new ServiceException(
+                    ErrorCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode()
+                    , "认证失败, 用户名或密码不正确, 或用户不存在"
+                    , null);
         }
         return user;
     }
