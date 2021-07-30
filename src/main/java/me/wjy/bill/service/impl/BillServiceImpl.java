@@ -7,7 +7,7 @@ import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.mapper.AccountMapper;
 import me.wjy.bill.mapper.BillMapper;
 import me.wjy.bill.pojo.dto.BillDTO;
-import me.wjy.bill.pojo.dto.SelectBillDTO;
+import me.wjy.bill.pojo.dto.FilterDTO;
 import me.wjy.bill.pojo.dto.TransferDTO;
 import me.wjy.bill.pojo.po.BillDO;
 import me.wjy.bill.pojo.vo.AccountVO;
@@ -186,18 +186,18 @@ public class BillServiceImpl implements BillService {
                 .build();
     }
 
-    public PublicResponse filter(SelectBillDTO selectBillDTO) throws ServiceException {
+    public PublicResponse filter(FilterDTO filterDTO) throws ServiceException {
         Double gt;
         Double lt;
-        gt = selectBillDTO.getGreaterThan();
-        lt = selectBillDTO.getLessThan();
+        gt = filterDTO.getGreaterThan();
+        lt = filterDTO.getLessThan();
         if (gt != null && lt != null) {
             if (lt < gt || gt > lt) {
                 throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误", null);
             }
         }
         logger.info("selectByFilter 模糊筛选");
-        List<BillDO> billList = billMapper.filter(selectBillDTO);
+        List<BillDO> billList = billMapper.filter(filterDTO);
         List<BillVO> billVOList = new ArrayList<>();
         for (BillDO billDO : billList) {
             if (billDO.getDeleted() == 0) {

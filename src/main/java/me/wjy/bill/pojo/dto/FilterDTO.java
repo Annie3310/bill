@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
-public class SelectBillDTO extends BaseDTO {
+public class FilterDTO extends BaseDTO {
     /*
      * 添加开始时间, 结束时间, 都可为空
      * 应格式化为 yyyy-MM-dd 的格式

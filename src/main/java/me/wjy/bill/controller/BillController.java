@@ -47,9 +47,9 @@ public class BillController {
     }
 
     @GetMapping("filter")
-    public PublicResponse getBillList(@RequestBody @Validated SelectBillDTO selectBillDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(selectBillDTO, httpServletRequest);
-        return billService.filter(selectBillDTO);
+    public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+        setUserId(filterDTO, httpServletRequest);
+        return billService.filter(filterDTO);
     }
 
     private void setUserId(BaseDTO baseDTO, HttpServletRequest httpServletRequest) {

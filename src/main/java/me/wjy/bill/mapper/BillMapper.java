@@ -2,7 +2,7 @@ package me.wjy.bill.mapper;
 
 import me.wjy.bill.pojo.dto.BillDTO;
 import me.wjy.bill.pojo.po.BillDO;
-import me.wjy.bill.pojo.dto.SelectBillDTO;
+import me.wjy.bill.pojo.dto.FilterDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,8 +21,8 @@ public interface BillMapper {
 
     /**
      * 多条件筛选
-     * @param selectBillDTO
+     * @param filterDTO
      * @return
      */
-    List<BillDO> filter(SelectBillDTO selectBillDTO);
+    List<BillDO> filter(FilterDTO filterDTO);
 }

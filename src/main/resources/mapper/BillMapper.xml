@@ -34,7 +34,7 @@
         #{money},
         #{userId})
     </insert>
-    <select id="filter" parameterType="me.wjy.bill.pojo.dto.SelectBillDTO"
+    <select id="filter" parameterType="me.wjy.bill.pojo.dto.FilterDTO"
             resultType="me.wjy.bill.pojo.po.BillDO">
         select <include refid="bill_vo_column"></include>, deleted from bill
         <trim prefix="where" prefixOverrides="and">
