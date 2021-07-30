@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 本地
+    url: ENC(vm2nzFwkSpwT4ERKN1SaWprrxEn1xChA7CV8knlsyCc/S0Ikad8bDQSvZ2AZn9LEltyzVhuQYFcLBAb+rpvD+8za9gL/lNlS0sTUdRab2luHz/yfJ9X+ZMfw0CTzSxGRaisNAY+Q1f8=)
+    username: ENC(lvix7hgGmVxH90gF3cKfiQ==)
+    password: ENC(7AeyNOakE0Sd1Crtb1PVN/uo/daaUou1)
+  # 远程
+#    url: ENC(LbD5JjxOoF1R5FHReFuoREaV2b3lYhOExDA/X+wXSqWddo+Fc3qWHTjZ6e5zS5Wi65lK/IS1c/o+WOKivQHCJVMWD3DBjTKM+AxQaYzN22WOvR5o6jDuln0SFKzR5Zvrl0zjTYkTbc/zoFEPrll77g==)
+#    username: ENC(9KBvxEHOvCjZN4UVHi0qnw==)
+#    password: ENC(SHn0og9pV+mGx5eDqLb6QyI0waAmLlru)
+  jpa:
+    database: mysql
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 3
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+#    打印 SQL 语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8080
