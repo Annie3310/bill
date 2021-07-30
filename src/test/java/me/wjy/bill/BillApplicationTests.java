@@ -26,14 +26,6 @@ class BillApplicationTests {
 
     @Test
     public void getPass() {
-        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword("1ffddab75e0bf3cda4e9eb85d980fb4dcdb0a6121c7ea923019c4268");
-        String url = textEncryptor.encrypt("jdbc:mysql://115.159.123.218:3306/bill?characterEncoding=UTF-8&useUnicode=true&serverTimezone=UTC");
-        String name = textEncryptor.encrypt("remote");
-        String password = textEncryptor.encrypt("Haibara1.");
 
-        System.out.println(url);
-        System.out.println(name);
-        System.out.println(password);
     }
 }
