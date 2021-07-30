@@ -3,13 +3,13 @@ package me.wjy.bill.service.impl;
 import me.wjy.bill.enums.BillResponseEnum;
 import me.wjy.bill.enums.BillTypeEnum;
 import me.wjy.bill.enums.ErrorCodeEnum;
-import me.wjy.bill.enums.ErrorEnum;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.mapper.AccountMapper;
 import me.wjy.bill.mapper.BillMapper;
 import me.wjy.bill.pojo.dto.BillDTO;
 import me.wjy.bill.pojo.dto.SelectBillDTO;
 import me.wjy.bill.pojo.dto.TransferDTO;
+import me.wjy.bill.pojo.po.BillDO;
 import me.wjy.bill.pojo.vo.AccountVO;
 import me.wjy.bill.pojo.vo.BillVO;
 import me.wjy.bill.response.GetSumResponse;
@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author 王金义
@@ -56,7 +53,7 @@ public class BillServiceImpl implements BillService {
         }
         Map<String, Double> detailsMap = new HashMap<>(16);
         for (AccountVO sumDetail : sumDetails) {
-            detailsMap.put(sumDetail.getName(),sumDetail.getBalance());
+            detailsMap.put(sumDetail.getName(), sumDetail.getBalance());
         }
         GetSumResponse sumResponse = GetSumResponse
                 .builder()
@@ -74,6 +71,10 @@ public class BillServiceImpl implements BillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse income(BillDTO billDTO) throws ServiceException {
+        boolean accountNotExist = isAccountNotExist(billDTO.getUserId(), billDTO.getAccount());
+        if (accountNotExist) {
+            throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
+        }
         billDTO.setUuid(String.valueOf(UUID.randomUUID()));
         billDTO.setType(BillTypeEnum.INCOME.getType());
         logger.info("income 开始生成账单");
@@ -106,6 +107,10 @@ public class BillServiceImpl implements BillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse expense(BillDTO billDTO) throws ServiceException {
+        boolean accountNotExist = isAccountNotExist(billDTO.getUserId(), billDTO.getAccount());
+        if (accountNotExist) {
+            throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
+        }
         billDTO.setUuid(String.valueOf(UUID.randomUUID()));
         logger.info("expense 开始生成账单");
         Integer effectiveRowsOfBill = billMapper.insert(billDTO);
@@ -209,22 +214,24 @@ public class BillServiceImpl implements BillService {
                 .build();
     }
 
-    public PublicResponse selectByFilter(SelectBillDTO selectBillDTO) {
+    public PublicResponse selectByFilter(SelectBillDTO selectBillDTO) throws ServiceException {
         Double gt;
         Double lt;
         gt = selectBillDTO.getGreaterThan();
         lt = selectBillDTO.getLessThan();
         if (gt != null && lt != null) {
             if (lt < gt || gt > lt) {
-                return PublicResponse
-                        .builder()
-                        .code(ErrorEnum.LOGIC_ERROR.getCode())
-                        .message(ErrorEnum.LOGIC_ERROR.getMessage())
-                        .build();
+                throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误", null);
             }
         }
         logger.info("selectByFilter 模糊筛选");
-        List<BillVO> billList = billMapper.selectBillList(selectBillDTO);
+        List<BillDO> billList = billMapper.selectBillList(selectBillDTO);
+        List<BillVO> billVOList = new ArrayList<>();
+        for (BillDO billDO : billList) {
+            if (billDO.getDeleted() == 0) {
+                billVOList.add(billDOToBillVO(billDO));
+            }
+        }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.GET_LIST_SUCCESS.getMessage());
         return PublicResponse.builder()
                 .code(BillResponseEnum.GET_LIST_SUCCESS.getResponseCode())
@@ -234,21 +241,6 @@ public class BillServiceImpl implements BillService {
                         .append("条")
                         .toString())
                 .result(billList)
-                .build();
-    }
-
-    public PublicResponse getDetails(BillDTO billDTO) throws ServiceException {
-        BillVO details = billMapper.getDetails(billDTO);
-        if (details == null) {
-            logger.warn("getDetails 未成功获取到详情");
-            throw new ServiceException(ErrorCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未成功获取到详情", null);
-        }
-
-        return PublicResponse
-                .builder()
-                .code(BillResponseEnum.GET_DETAILS_SUCCESS.getResponseCode())
-                .message(BillResponseEnum.GET_DETAILS_SUCCESS.getMessage())
-                .result(details)
                 .build();
     }
 
@@ -275,5 +267,29 @@ public class BillServiceImpl implements BillService {
         map.put("from", from);
         map.put("to", to);
         return map;
+    }
+
+    private boolean isAccountNotExist(String userId, String account) {
+        List<String> allAccount = accountMapper.getAllAccount(userId);
+        String tempAccount = null;
+        String dtoAccount = account;
+        for (String s : allAccount) {
+            if (s.equals(dtoAccount)) {
+                tempAccount = dtoAccount;
+            }
+        }
+        return tempAccount == null;
+    }
+
+    private BillVO billDOToBillVO(BillDO billDO) {
+        return BillVO
+                .builder()
+                .account(billDO.getAccount())
+                .createTime(billDO.getCreateTime())
+                .description(billDO.getDescription())
+                .money(billDO.getMoney())
+                .type(billDO.getType())
+                .uuid(billDO.getUuid())
+                .build();
     }
 }

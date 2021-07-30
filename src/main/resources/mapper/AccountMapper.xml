@@ -23,4 +23,8 @@
         from account
         where user_id = #{userId}
     </select>
+
+    <select id="getAllAccount" resultType="java.lang.String">
+        select name from account where user_id = #{userId}
+    </select>
 </mapper>

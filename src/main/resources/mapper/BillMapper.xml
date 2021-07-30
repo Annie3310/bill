@@ -3,7 +3,7 @@
 <mapper namespace="me.wjy.bill.mapper.BillMapper">
     <sql id="bill_vo_column">
         uuid
-        ,description,money,type,account,create_time
+        ,description,money,type,account,create_time,update_time
     </sql>
     <insert id="insert" parameterType="me.wjy.bill.pojo.dto.BillDTO">
         insert into bill
@@ -38,12 +38,9 @@
         insert into bill(uuid, description, money, account, type, user_id)
         values (#{uuid}, '工资', 3500, 'cmb', 1, #{userId})
     </insert>
-    <select id="getDetails" parameterType="me.wjy.bill.pojo.dto.BillDTO" resultType="me.wjy.bill.pojo.vo.BillVO">
-        select <include refid="bill_vo_column"></include> from bill where uuid = #{uuid} and deleted = 0 and user_id =
-        #{userId}
-    </select>
-    <select id="selectBillList" parameterType="me.wjy.bill.pojo.dto.SelectBillDTO" resultType="me.wjy.bill.pojo.vo.BillVO">
-        select <include refid="bill_vo_column"></include> from bill
+    <select id="selectBillList" parameterType="me.wjy.bill.pojo.dto.SelectBillDTO"
+            resultType="me.wjy.bill.pojo.po.BillDO">
+        select <include refid="bill_vo_column"></include>, deleted from bill
         <trim prefix="where" prefixOverrides="and">
             <if test="uuid != null">
                 and uuid = #{uuid}
@@ -63,7 +60,6 @@
             <if test="lessThan != null">
                 and money &lt;= #{lessThan}
             </if>
-            and deleted = 0
             and user_id = #{userId}
         </trim>
     </select>

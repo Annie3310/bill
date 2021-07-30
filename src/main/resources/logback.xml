@@ -11,53 +11,53 @@
         </encoder>
     </appender>
 
-    <!--根据日志级别分离日志，分别输出到不同的文件-->
-    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>DENY</onMatch>
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-        <!--滚动策略-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--按时间保存日志 修改格式可以按小时、按天、月来保存-->
-            <fileNamePattern>${logBase}/log.info.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!--保存时长-->
-            <MaxHistory>90</MaxHistory>
-            <!--文件大小-->
-            <totalSizeCap>1GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
+<!--    &lt;!&ndash;根据日志级别分离日志，分别输出到不同的文件&ndash;&gt;-->
+<!--    <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>ERROR</level>-->
+<!--            <onMatch>DENY</onMatch>-->
+<!--            <onMismatch>ACCEPT</onMismatch>-->
+<!--        </filter>-->
+<!--        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
+<!--            <pattern>-->
+<!--                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n-->
+<!--            </pattern>-->
+<!--            <charset>UTF-8</charset>-->
+<!--        </encoder>-->
+<!--        &lt;!&ndash;滚动策略&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;按时间保存日志 修改格式可以按小时、按天、月来保存&ndash;&gt;-->
+<!--            <fileNamePattern>${logBase}/log.info.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            &lt;!&ndash;保存时长&ndash;&gt;-->
+<!--            <MaxHistory>90</MaxHistory>-->
+<!--            &lt;!&ndash;文件大小&ndash;&gt;-->
+<!--            <totalSizeCap>1GB</totalSizeCap>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
-    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-        <encoder>
-            <pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n
-            </pattern>
-        </encoder>
-        <!--滚动策略-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!--路径-->
-            <fileNamePattern>${logBase}/log.error.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <MaxHistory>90</MaxHistory>
-        </rollingPolicy>
-    </appender>
+<!--    <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+<!--            <level>ERROR</level>-->
+<!--        </filter>-->
+<!--        <encoder>-->
+<!--            <pattern>-->
+<!--                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n-->
+<!--            </pattern>-->
+<!--        </encoder>-->
+<!--        &lt;!&ndash;滚动策略&ndash;&gt;-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;路径&ndash;&gt;-->
+<!--            <fileNamePattern>${logBase}/log.error.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            <MaxHistory>90</MaxHistory>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
 
-    <logger name="com.zjh.activity.core.dao" level="debug"></logger>
+    <logger name="me.wjy.bill.mapper" level="debug"></logger>
 <!--    <logger name="com.example.demo.controller" level="debug"></logger>-->
 
     <root level="info">
         <appender-ref ref="consoleLog"/>
-        <appender-ref ref="fileInfoLog"/>
-        <appender-ref ref="fileErrorLog"/>
+<!--        <appender-ref ref="fileInfoLog"/>-->
+<!--        <appender-ref ref="fileErrorLog"/>-->
     </root>
 </configuration>

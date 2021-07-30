@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDO getUser(UserDTO userDTO) throws ServiceException {
+        // TODO 只用 userId 查用户, 再在 Service 层验证密码
         logger.info("getUser 获取用户");
         userDTO.setPassword(SHA256.SHA256(userDTO.getPassword()));
         UserDO user = userMapper.getUser(userDTO);

@@ -1,10 +1,7 @@
 package me.wjy.bill.controller;
 
 import me.wjy.bill.exception.ServiceException;
-import me.wjy.bill.pojo.dto.BillDTO;
-import me.wjy.bill.pojo.dto.BaseDTO;
-import me.wjy.bill.pojo.dto.SelectBillDTO;
-import me.wjy.bill.pojo.dto.TransferDTO;
+import me.wjy.bill.pojo.dto.*;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.service.impl.BillServiceImpl;
 import org.springframework.validation.annotation.Validated;
@@ -24,22 +21,23 @@ public class BillController {
     public BillController(BillServiceImpl billService) {
         this.billService = billService;
     }
+    // TODO 用切面设置 userId
 
     @PostMapping("income")
     public PublicResponse income(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(billDTO,httpServletRequest);
+        setUserId(billDTO, httpServletRequest);
         return billService.income(billDTO);
     }
 
     @PostMapping("expense")
-    public PublicResponse expense(@RequestBody BillDTO billDTO,HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(billDTO,httpServletRequest);
+    public PublicResponse expense(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+        setUserId(billDTO, httpServletRequest);
         return billService.expense(billDTO);
     }
 
     @PostMapping("transfer")
     public PublicResponse transfer(@RequestBody @Validated TransferDTO transferDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(transferDTO,httpServletRequest);
+        setUserId(transferDTO, httpServletRequest);
         return billService.transfer(transferDTO);
     }
 
@@ -54,17 +52,11 @@ public class BillController {
     }
 
     @GetMapping("filter")
-    public PublicResponse getBillList(@RequestBody @Validated SelectBillDTO selectBillDTO, HttpServletRequest httpServletRequest) {
-        setUserId(selectBillDTO,httpServletRequest);
+    public PublicResponse getBillList(@RequestBody @Validated SelectBillDTO selectBillDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+        setUserId(selectBillDTO, httpServletRequest);
         return billService.selectByFilter(selectBillDTO);
     }
 
-    @GetMapping("details")
-    public PublicResponse getDetails(@RequestBody @Validated BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(billDTO, httpServletRequest);
-        return billService.getDetails(billDTO);
-
-    }
     private void setUserId(BaseDTO baseDTO, HttpServletRequest httpServletRequest) {
         baseDTO.setUserId(httpServletRequest.getHeader("id"));
     }

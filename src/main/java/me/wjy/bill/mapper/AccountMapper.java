@@ -1,5 +1,6 @@
 package me.wjy.bill.mapper;
 
+import me.wjy.bill.pojo.po.AccountDO;
 import me.wjy.bill.pojo.vo.AccountVO;
 import me.wjy.bill.pojo.dto.BillDTO;
 import org.springframework.stereotype.Repository;
@@ -38,5 +39,12 @@ public interface AccountMapper {
      * @return 所有账户的余额
      */
     List<AccountVO> getSumDetails(String userId);
+
+    /**
+     * 获取当前用户的所有账户
+     * @param userId
+     * @return
+     */
+    List<String> getAllAccount(String userId);
 
 }

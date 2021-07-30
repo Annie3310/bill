@@ -3,6 +3,7 @@ package me.wjy.bill.exception;
 import me.wjy.bill.enums.ErrorCodeEnum;
 import me.wjy.bill.response.PublicResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -47,6 +48,15 @@ public class ControllerExceptionHandler {
                 .builder()
                 .code(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
                 .message(message)
+                .build();
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public PublicResponse onHttpMessageNotReadableException(HttpMessageNotReadableException httpMessageNotReadableException) {
+        return PublicResponse
+                .builder()
+                .code(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
+                .message("参数解析异常")
                 .build();
     }
 }
