@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -194,6 +195,13 @@ public class BillServiceImpl implements BillService {
         if (gt != null && lt != null) {
             if (lt < gt || gt > lt) {
                 throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误", null);
+            }
+        }
+        LocalDate startDate = filterDTO.getStartDate();
+        LocalDate endDate = filterDTO.getEndDate();
+        if (startDate != null && endDate != null) {
+            if (Objects.equals(startDate, endDate)) {
+                filterDTO.setEndDate(null);
             }
         }
         logger.info("selectByFilter 模糊筛选");
