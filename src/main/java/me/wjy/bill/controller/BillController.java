@@ -41,11 +41,6 @@ public class BillController {
         return billService.transfer(transferDTO);
     }
 
-    @PostMapping("paid")
-    public PublicResponse getPaid(HttpServletRequest httpServletRequest) throws ServiceException {
-        return billService.getPaid(httpServletRequest.getHeader("id"));
-    }
-
     @GetMapping("sum")
     public PublicResponse getSum(HttpServletRequest httpServletRequest) throws ServiceException {
         return billService.getSum(httpServletRequest.getHeader("id"));
@@ -54,7 +49,7 @@ public class BillController {
     @GetMapping("filter")
     public PublicResponse getBillList(@RequestBody @Validated SelectBillDTO selectBillDTO, HttpServletRequest httpServletRequest) throws ServiceException {
         setUserId(selectBillDTO, httpServletRequest);
-        return billService.selectByFilter(selectBillDTO);
+        return billService.filter(selectBillDTO);
     }
 
     private void setUserId(BaseDTO baseDTO, HttpServletRequest httpServletRequest) {

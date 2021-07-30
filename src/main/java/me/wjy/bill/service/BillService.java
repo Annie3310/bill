@@ -30,12 +30,6 @@ public interface BillService {
     PublicResponse transfer(TransferDTO transferDTO) throws ServiceException;
 
     /**
-     * 发工资喽!
-     * @return 执行信息
-     */
-    PublicResponse getPaid(String userId) throws ServiceException;
-
-    /**
      * 获取资产总合
      * @return 执行信息
      */

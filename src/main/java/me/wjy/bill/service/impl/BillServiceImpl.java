@@ -186,38 +186,7 @@ public class BillServiceImpl implements BillService {
                 .build();
     }
 
-    @Override
-    public PublicResponse getPaid(String userId) throws ServiceException {
-        BillDTO billDTO = BillDTO
-                .builder()
-                .money(3500D)
-                .account("cmb")
-                .uuid(String.valueOf(UUID.randomUUID()))
-                .build();
-        billDTO.setUserId(userId);
-        logger.info("getPaid 生成工资账单");
-        Integer i = billMapper.getPaid(billDTO);
-        Integer j;
-        if (i > 0) {
-            logger.info("getPaid 转入工资账户");
-            j = accountMapper.plusTo(billDTO);
-        } else {
-            logger.warn("getPaid 生成工资账单失败: {}", i);
-            throw new ServiceException(ErrorCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单更新失败", null);
-        }
-        if (j <= 0) {
-            logger.warn("getPaid 转入工资账户失败: {}", j);
-            throw new ServiceException(ErrorCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账户更新失败", null);
-        }
-        return PublicResponse
-                .builder()
-                .code(BillResponseEnum.GET_PAID_SUCCESS.getResponseCode())
-                .message(BillResponseEnum.GET_PAID_SUCCESS.getMessage())
-                .result(i)
-                .build();
-    }
-
-    public PublicResponse selectByFilter(SelectBillDTO selectBillDTO) throws ServiceException {
+    public PublicResponse filter(SelectBillDTO selectBillDTO) throws ServiceException {
         Double gt;
         Double lt;
         gt = selectBillDTO.getGreaterThan();
@@ -228,7 +197,7 @@ public class BillServiceImpl implements BillService {
             }
         }
         logger.info("selectByFilter 模糊筛选");
-        List<BillDO> billList = billMapper.selectBillList(selectBillDTO);
+        List<BillDO> billList = billMapper.filter(selectBillDTO);
         List<BillVO> billVOList = new ArrayList<>();
         for (BillDO billDO : billList) {
             if (billDO.getDeleted() == 0) {

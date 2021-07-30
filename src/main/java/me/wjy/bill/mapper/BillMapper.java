@@ -12,7 +12,17 @@ import java.util.List;
  */
 @Repository
 public interface BillMapper {
+    /**
+     * 插入一条记录, 为多个业务所调用
+     * @param billDTO
+     * @return
+     */
     int insert(BillDTO billDTO);
-    int getPaid(BillDTO billDTO);
-    List<BillDO> selectBillList(SelectBillDTO selectBillDTO);
+
+    /**
+     * 多条件筛选
+     * @param selectBillDTO
+     * @return
+     */
+    List<BillDO> filter(SelectBillDTO selectBillDTO);
 }

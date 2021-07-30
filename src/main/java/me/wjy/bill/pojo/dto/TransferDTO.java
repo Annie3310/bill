@@ -21,6 +21,5 @@ public class TransferDTO extends BaseDTO {
     String to;
     @NotNull(message = "金额不能为空")
     Double money;
-    @Null
     String description;
 }
