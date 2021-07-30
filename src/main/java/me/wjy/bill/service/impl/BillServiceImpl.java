@@ -147,6 +147,9 @@ public class BillServiceImpl implements BillService {
         HashMap<String, BillDTO> map = transferDTOToBillDTO(transferDTO);
         BillDTO from = map.get("from");
         BillDTO to = map.get("to");
+        if (Objects.equals(from.getAccount(), to.getAccount())) {
+            throw new ServiceException(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "两个请求账户相同", null);
+        }
         // 账单插入是否生效
         logger.info("transfer 开始生成转账 From 账单");
         Integer effectiveRowsOfFrom = billMapper.insert(from);
