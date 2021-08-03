@@ -23,14 +23,10 @@ import javax.servlet.http.HttpServletRequest;
 public class PublicControllerAspect {
     private final Logger logger = LoggerFactory.getLogger(PublicControllerAspect.class);
 
-    @Pointcut("execution(* me.wjy.bill.controller.BillController.*(..)) && !execution(* me.wjy.bill.controller.BillController.getSum(..))")
-    public void aspectAllBill(){}
-    @Pointcut("execution(* me.wjy.bill.controller.AccountController.*(..))")
-    public void aspectAllAccount(){}
-    @Pointcut("aspectAllBill() || aspectAllAccount()")
-    public void combination() {}
+    @Pointcut("@annotation(me.wjy.bill.annotation.GetUserId)")
+    public void getUserId(){}
 
-    @Before("combination()")
+    @Before("getUserId()")
     public void setUserId(JoinPoint joinPoint) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;

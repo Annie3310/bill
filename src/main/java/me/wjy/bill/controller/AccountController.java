@@ -1,5 +1,7 @@
 package me.wjy.bill.controller;
 
+import me.wjy.bill.annotation.GetUserId;
+import me.wjy.bill.annotation.SetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
@@ -18,24 +20,26 @@ public class AccountController {
     public AccountController(UserServiceImpl userService) {
         this.userService = userService;
     }
-
+    @GetUserId
     @PostMapping("account")
     public PublicResponse addAccount(@RequestBody AccountDTO accountDTO) throws ServiceException {
         return userService.addAccount(accountDTO);
     }
-
+    @GetUserId
     @DeleteMapping("account")
     public PublicResponse rmAccount(@RequestBody AccountDTO accountDTO) throws ServiceException {
         return userService.rmAccount(accountDTO);
     }
 
+    @GetUserId
     @PutMapping("account")
     public PublicResponse updateAccount(@RequestBody AccountUpdateDTO accountUpdateDTO) throws ServiceException {
         return userService.updateAccount(accountUpdateDTO);
     }
 
+    @GetUserId
     @GetMapping("account")
-    public PublicResponse getAllAccount(@RequestBody AccountDTO accountDTO) throws ServiceException {
+    public PublicResponse getAllAccount( @RequestBody AccountDTO accountDTO) throws ServiceException {
         return userService.getAllAccount(accountDTO.getUserId());
     }
 }

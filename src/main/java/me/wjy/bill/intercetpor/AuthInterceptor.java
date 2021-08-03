@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthInterceptor implements HandlerInterceptor {
     private final UserServiceImpl userService;
 
+
     public AuthInterceptor(UserServiceImpl userService) {
         this.userService = userService;
     }

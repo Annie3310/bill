@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * TODO 用户插入/删除/更改账户时, 应同时增加对应的账单
+ *
  * @author 王金义
  */
 @Service
@@ -131,13 +131,42 @@ public class UserServiceImpl implements UserService {
         }
         HashMap<String, Double> mapOfVO = new HashMap<>(allAccount.size());
         for (AccountDO accountDO : allAccount) {
-            mapOfVO.put(accountDO.getName(),accountDO.getBalance());
+            mapOfVO.put(accountDO.getName(), accountDO.getBalance());
         }
         return PublicResponse
                 .builder()
                 .code(ResponseCodeEnum.OK.getErrorCode())
                 .message("获取成功")
                 .result(mapOfVO)
+                .build();
+    }
+
+    @Override
+    public PublicResponse updateName(UserDTO userDTO) throws ServiceException {
+        userDTO.setPassword(null);
+        Integer update = userMapper.update(userDTO);
+        if (update < 1) {
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功", null);
+        }
+        return PublicResponse
+                .builder()
+                .code(ResponseCodeEnum.OK.getErrorCode())
+                .message("修改成功")
+                .build();
+    }
+
+    @Override
+    public PublicResponse updatePassword(UserDTO userDTO) throws ServiceException {
+        userDTO.setName(null);
+        userDTO.setPassword(SHA256.getSHA256(userDTO.getPassword()));
+        Integer update = userMapper.update(userDTO);
+        if (update < 1) {
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功", null);
+        }
+        return PublicResponse
+                .builder()
+                .code(ResponseCodeEnum.OK.getErrorCode())
+                .message("修改成功")
                 .build();
     }
 

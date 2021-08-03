@@ -1,5 +1,6 @@
 package me.wjy.bill.controller;
 
+import me.wjy.bill.annotation.GetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.*;
 import me.wjy.bill.response.PublicResponse;
@@ -22,26 +23,31 @@ public class BillController {
         this.billService = billService;
     }
 
+    @GetUserId
     @PostMapping("income")
     public PublicResponse income(@RequestBody BillDTO billDTO) throws ServiceException {
         return billService.income(billDTO);
     }
 
+    @GetUserId
     @PostMapping("expense")
     public PublicResponse expense(@RequestBody BillDTO billDTO) throws ServiceException {
         return billService.expense(billDTO);
     }
 
+    @GetUserId
     @PostMapping("transfer")
     public PublicResponse transfer(@RequestBody @Validated TransferDTO transferDTO) throws ServiceException {
         return billService.transfer(transferDTO);
     }
 
+    @GetUserId
     @GetMapping("sum")
     public PublicResponse getSum(HttpServletRequest httpServletRequest) throws ServiceException {
         return billService.getSum(httpServletRequest.getHeader("id"));
     }
 
+    @GetUserId
     @GetMapping("filter")
     public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO) throws ServiceException {
         return billService.filter(filterDTO);

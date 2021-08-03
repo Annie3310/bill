@@ -59,4 +59,20 @@ public interface UserService {
      * @throws ServiceException 通用异常类
      */
     PublicResponse getAllAccount(String userId) throws ServiceException;
+
+    /**
+     * 更改密码
+     * @param userDTO 新的信息
+     * @return 通用返回体
+     * @throws ServiceException 通用异常类
+     */
+    PublicResponse updatePassword(UserDTO userDTO) throws ServiceException;
+
+    /**
+     * 更改姓名
+     * @param userDTO 新的信息
+     * @return 通用返回体
+     * @throws ServiceException 通用异常类
+     */
+    PublicResponse updateName(UserDTO userDTO) throws ServiceException;
 }

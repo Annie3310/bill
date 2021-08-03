@@ -3,6 +3,7 @@ package me.wjy.bill.mapper;
 import me.wjy.bill.pojo.po.UserDO;
 import me.wjy.bill.pojo.dto.UserDTO;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,4 +26,5 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     Integer save(UserDTO userDTO);
 
+    Integer update(UserDTO userDTO);
 }

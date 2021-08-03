@@ -1,5 +1,6 @@
 package me.wjy.bill.controller;
 
+import me.wjy.bill.annotation.GetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.UserDTO;
 import me.wjy.bill.response.PublicResponse;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
  * @author 王金义
  * @date 2021/8/3
  */
-@RestController()
+@RestController
+@RequestMapping("user")
 public class UserController {
     private final UserServiceImpl userService;
 
@@ -23,4 +25,15 @@ public class UserController {
         return userService.register(userDTO);
     }
 
+    @GetUserId
+    @PutMapping("password")
+    public PublicResponse updatePassword(@RequestBody UserDTO userDTO) throws ServiceException {
+        return userService.updatePassword(userDTO);
+    }
+
+    @GetUserId
+    @PostMapping("name")
+    public PublicResponse updateName(@RequestBody UserDTO userDTO) throws ServiceException {
+        return userService.updateName(userDTO);
+    }
 }
