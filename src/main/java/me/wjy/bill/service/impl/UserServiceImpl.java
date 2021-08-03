@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public UserDO getUser(UserDTO userDTO) throws ServiceException {
         if (userDTO.getUserId() == null || userDTO.getPassword() == null) {
             logger.warn("getUser 未找到用户名或密码");
-            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "未在输入中找到用户名或密码", null);
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户名或密码未输入", null);
         }
         logger.info("getUser 获取用户");
         String userDTOPassword = userDTO.getPassword();
@@ -148,6 +148,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse register(UserDTO userDTO) throws ServiceException {
+        if (userDTO.getName() == null || userDTO.getPassword() == null) {
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "name 或 password 为空", null);
+        }
         userDTO.setUserId(UUIDUtil.getUUID(UUID_LEN));
         userDTO.setPassword(SHA256.SHA256(userDTO.getPassword()));
         Integer i = userMapper.save(userDTO);

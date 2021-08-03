@@ -1,7 +1,6 @@
 package me.wjy.bill.controller;
 
 import me.wjy.bill.exception.ServiceException;
-import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.UserDTO;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.service.impl.UserServiceImpl;
@@ -19,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public PublicResponse register(@RequestBody UserDTO userDTO) throws ServiceException {
         return userService.register(userDTO);
     }

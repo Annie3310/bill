@@ -53,7 +53,7 @@ public class BillServiceImpl implements BillService {
         }
         logger.info("getSum 获取账户总和");
         Double sum = accountMapper.getSum(userId);
-        if (sum <= 0) {
+        if (sum <= 0 && sumDetails.isEmpty()) {
             logger.warn("getSum 获取余额总和失败: {}", sum);
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到总和", null);
         }

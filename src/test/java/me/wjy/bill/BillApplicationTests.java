@@ -1,7 +1,6 @@
 package me.wjy.bill;
 
 import me.wjy.bill.controller.BillController;
-import me.wjy.bill.controller.Error;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.BaseDTO;
 import me.wjy.bill.pojo.dto.BillDTO;
