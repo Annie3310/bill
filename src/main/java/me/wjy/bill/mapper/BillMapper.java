@@ -14,15 +14,15 @@ import java.util.List;
 public interface BillMapper {
     /**
      * 插入一条记录, 为多个业务所调用
-     * @param billDTO
-     * @return
+     * @param billDTO require: money, account
+     * @return 受影响的行数
      */
-    int insert(BillDTO billDTO);
+    Integer insert(BillDTO billDTO);
 
     /**
      * 多条件筛选
-     * @param filterDTO
-     * @return
+     * @param filterDTO 条件
+     * @return 找到的记录
      */
     List<BillDO> filter(FilterDTO filterDTO);
 }

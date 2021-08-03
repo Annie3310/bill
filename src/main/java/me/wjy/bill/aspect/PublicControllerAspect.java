@@ -34,6 +34,7 @@ public class PublicControllerAspect {
     public void setUserId(JoinPoint joinPoint) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+        assert servletRequestAttributes != null;
         HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
         String id = httpServletRequest.getHeader("id");
         String methodName = joinPoint.getSignature().getName();

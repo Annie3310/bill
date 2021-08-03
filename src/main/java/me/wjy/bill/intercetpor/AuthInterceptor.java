@@ -27,9 +27,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         UserDTO userDTO = UserDTO.builder().password(password).build();
         userDTO.setUserId(id);
         UserDO user = userService.getUser(userDTO);
-        if (user != null) {
-            return true;
-        }
-        return false;
+        return user != null;
     }
 }

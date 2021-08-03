@@ -1,7 +1,6 @@
 package me.wjy.bill.pojo.vo;
 
 import lombok.*;
-import me.wjy.bill.response.PublicResponse;
 
 /**
  * 账单 VO
@@ -11,7 +10,6 @@ import me.wjy.bill.response.PublicResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class BillVO{
     String description;
     String uuid;

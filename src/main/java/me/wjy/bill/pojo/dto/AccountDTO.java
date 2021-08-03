@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@EqualsAndHashCode(callSuper = true)
 public class AccountDTO extends BaseDTO {
     String name;
     Double balance;

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@EqualsAndHashCode(callSuper = true)
 @Builder
 public class AccountUpdateDTO extends BaseDTO{
     @NotNull

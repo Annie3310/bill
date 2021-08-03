@@ -1,9 +1,6 @@
 package me.wjy.bill.response;
 
 import lombok.*;
-import me.wjy.bill.pojo.vo.AccountVO;
-
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -7,7 +7,6 @@ import me.wjy.bill.mapper.AccountMapper;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
 import me.wjy.bill.pojo.po.AccountDO;
-import me.wjy.bill.pojo.vo.AccountVO;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.utils.SHA256;
 import me.wjy.bill.mapper.UserMapper;
@@ -20,12 +19,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 /**
+ * TODO 用户插入/删除/更改账户时, 应同时增加对应的账单
  * @author 王金义
  */
 @Service
@@ -40,9 +39,6 @@ public class UserServiceImpl implements UserService {
 
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private final Integer UUID_LEN = UUIDConfig.UUID_LEN;
-
-
     @Override
     public UserDO getUser(UserDTO userDTO) throws ServiceException {
         if (userDTO.getUserId() == null || userDTO.getPassword() == null) {
@@ -51,7 +47,7 @@ public class UserServiceImpl implements UserService {
         }
         logger.info("getUser 获取用户");
         String userDTOPassword = userDTO.getPassword();
-        userDTO.setPassword(SHA256.SHA256(userDTOPassword));
+        userDTO.setPassword(SHA256.getSHA256(userDTOPassword));
         UserDO user = userMapper.getUser(userDTO.getUserId());
         if (user == null) {
             logger.warn("getUser 未获取到用户");
@@ -151,8 +147,8 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getName() == null || userDTO.getPassword() == null) {
             throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "name 或 password 为空", null);
         }
-        userDTO.setUserId(UUIDUtil.getUUID(UUID_LEN));
-        userDTO.setPassword(SHA256.SHA256(userDTO.getPassword()));
+        userDTO.setUserId(UUIDUtil.getUUID(UUIDConfig.UUID_LEN));
+        userDTO.setPassword(SHA256.getSHA256(userDTO.getPassword()));
         Integer i = userMapper.save(userDTO);
         if (i == null || i < 1) {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未成功注册", null);

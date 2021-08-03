@@ -1,6 +1,5 @@
 package me.wjy.bill.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -8,6 +7,9 @@ import lombok.Getter;
  */
 @Getter
 public enum BillResponseEnum {
+    /**
+     *
+     */
     INCOME_SUCCESS("00000", "收入成功"),
     EXPENSE_SUCCESS("00000", "支出成功"),
     TRANSFER_SUCCESS("00000", "转账成功"),

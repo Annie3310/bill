@@ -2,8 +2,6 @@ package me.wjy.bill.response;
 
 import lombok.*;
 
-import java.util.List;
-
 /**
  * @author 王金义
  */
@@ -11,7 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class PublicResponse {
     String code;
     String message;

@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 /**
  * 转账提交封装
@@ -13,7 +12,7 @@ import javax.validation.constraints.Null;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@EqualsAndHashCode(callSuper = true)
 @Builder
 public class TransferDTO extends BaseDTO {
     @NotNull(message = "源账户不能为空")

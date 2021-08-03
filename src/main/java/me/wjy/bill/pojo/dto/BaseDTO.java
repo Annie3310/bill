@@ -9,7 +9,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class BaseDTO {
     @JsonProperty("userId")
     String userId;

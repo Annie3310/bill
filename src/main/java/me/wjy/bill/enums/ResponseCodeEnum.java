@@ -8,6 +8,9 @@ import lombok.Getter;
  */
 @Getter
 public enum ResponseCodeEnum {
+    /**
+     *
+     */
     OK("00000","一切正常"),
     SYSTEM_EXECUTION_ERROR("B0001","系统执行错误"),
     USER_REQUEST_PARAM_ERROR("A0400","用户请求参数错误"),

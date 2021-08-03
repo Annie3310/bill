@@ -5,6 +5,9 @@ package me.wjy.bill.enums;
  * @author 王金义
  */
 public enum BillTypeEnum {
+    /**
+     * 对应数据表中的收入和支出关系
+     */
     INCOME(1),
     EXPENSE(0);
 

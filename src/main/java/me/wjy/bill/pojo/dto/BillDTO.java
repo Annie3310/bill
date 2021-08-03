@@ -15,7 +15,7 @@ import javax.validation.constraints.Null;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@EqualsAndHashCode(callSuper = true)
 public class BillDTO extends BaseDTO {
     @Null
     String uuid;

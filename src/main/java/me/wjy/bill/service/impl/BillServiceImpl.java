@@ -84,8 +84,8 @@ public class BillServiceImpl implements BillService {
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
         billDTO.setType(BillTypeEnum.INCOME.getType());
         logger.info("income 开始生成账单");
-        Integer effectiveRowsOfBill = billMapper.insert(billDTO);
-        Integer effectiveRowsOfAccount;
+        int effectiveRowsOfBill = billMapper.insert(billDTO);
+        int effectiveRowsOfAccount;
         if (effectiveRowsOfBill > 0) {
             logger.info("income 开始向账户添加金额");
             effectiveRowsOfAccount = accountMapper.plusTo(billDTO);
@@ -119,8 +119,8 @@ public class BillServiceImpl implements BillService {
         }
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
         logger.info("expense 开始生成账单");
-        Integer effectiveRowsOfBill = billMapper.insert(billDTO);
-        Integer effectiveRowsOfAccount;
+        int effectiveRowsOfBill = billMapper.insert(billDTO);
+        int effectiveRowsOfAccount;
         if (effectiveRowsOfBill > 0) {
             logger.info("expense 从账户转出");
             effectiveRowsOfAccount = accountMapper.minusFrom(billDTO);
@@ -150,7 +150,7 @@ public class BillServiceImpl implements BillService {
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse transfer(TransferDTO transferDTO) throws ServiceException {
         logger.info("transfer 开始从输入中获取 BillDTO");
-        HashMap<String, BillDTO> map = transferDTOToBillDTO(transferDTO);
+        HashMap<String, BillDTO> map = transferToBill(transferDTO);
         BillDTO from = map.get("from");
         BillDTO to = map.get("to");
         if (Objects.equals(from.getAccount(), to.getAccount())) {
@@ -158,10 +158,10 @@ public class BillServiceImpl implements BillService {
         }
         // 账单插入是否生效
         logger.info("transfer 开始生成转账 From 账单");
-        Integer effectiveRowsOfFrom = billMapper.insert(from);
+        int effectiveRowsOfFrom = billMapper.insert(from);
         logger.info("transfer 开始生成转账 To 账单");
-        Integer effectiveRowsOfTo = billMapper.insert(to);
-        Boolean isInsertFail = effectiveRowsOfFrom < 1 || effectiveRowsOfTo < 1;
+        int effectiveRowsOfTo = billMapper.insert(to);
+        boolean isInsertFail = effectiveRowsOfFrom < 1 || effectiveRowsOfTo < 1;
         if (isInsertFail) {
             logger.warn("transfer 生成账单失败: 'From' = {}, 'To' = {}", effectiveRowsOfFrom, effectiveRowsOfTo);
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "添加账单失败", null);
@@ -169,7 +169,7 @@ public class BillServiceImpl implements BillService {
         logger.info("transfer 开始进行转账");
         int effectiveRowsOfAccountFrom = accountMapper.minusFrom(from);
         int effectiveRowsOfAccountTo = accountMapper.plusTo(to);
-        Boolean isTransferFail = effectiveRowsOfAccountFrom < 1 || effectiveRowsOfAccountTo < 1;
+        boolean isTransferFail = effectiveRowsOfAccountFrom < 1 || effectiveRowsOfAccountTo < 1;
         if (isTransferFail) {
             logger.warn("transfer 转账失败: 'From' = {}, 'To' = {}", effectiveRowsOfAccountFrom, effectiveRowsOfAccountTo);
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "转账失败", null);
@@ -198,7 +198,7 @@ public class BillServiceImpl implements BillService {
         gt = filterDTO.getGreaterThan();
         lt = filterDTO.getLessThan();
         if (gt != null && lt != null) {
-            if (lt < gt || gt > lt) {
+            if (lt < gt) {
                 throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误", null);
             }
         }
@@ -225,11 +225,11 @@ public class BillServiceImpl implements BillService {
                         .append(billList.size())
                         .append("条")
                         .toString())
-                .result(billList)
+                .result(billVOList)
                 .build();
     }
 
-    private HashMap<String, BillDTO> transferDTOToBillDTO(TransferDTO transferDTO) {
+    private HashMap<String, BillDTO> transferToBill(TransferDTO transferDTO) {
         String description = transferDTO.getDescription();
         Double money = transferDTO.getMoney();
         BillDTO from = BillDTO.builder()

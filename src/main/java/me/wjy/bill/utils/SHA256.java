@@ -11,18 +11,18 @@ public class SHA256 {
     /**
      * 传入文本内容，返回 SHA-256 串
      *
-     * @param strText
-     * @return
+     * @param strText 需要计算的字符串
+     * @return SHA256 散列码
      */
-    public static String SHA256(final String strText)
+    public static String getSHA256(final String strText)
     {
         return SHA(strText);
     }
 
     /**
      * 字符串SHA256加密
-     * @param strText
-     * @return
+     * @param strText 需要计算的字符串
+     * @return SHA256 散列码
      */
     private static String SHA(final String strText)
     {
@@ -43,13 +43,11 @@ public class SHA256 {
                 byte[] byteBuffer = messageDigest.digest();
 
                 // 将 byte 转换为 string
-                StringBuffer strHexString = new StringBuffer();
+                StringBuilder strHexString = new StringBuilder();
                 // 遍历 byte buffer
-                for (int i = 0; i < byteBuffer.length; i++)
-                {
-                    String hex = Integer.toHexString(0xff & byteBuffer[i]);
-                    if (hex.length() == 1)
-                    {
+                for (byte b : byteBuffer) {
+                    String hex = Integer.toHexString(0xff & b);
+                    if (hex.length() == 1) {
                         strHexString.append('0');
                     }
                     strHexString.append(hex);

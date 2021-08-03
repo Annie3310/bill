@@ -23,17 +23,17 @@ public class BillController {
     }
 
     @PostMapping("income")
-    public PublicResponse income(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+    public PublicResponse income(@RequestBody BillDTO billDTO) throws ServiceException {
         return billService.income(billDTO);
     }
 
     @PostMapping("expense")
-    public PublicResponse expense(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+    public PublicResponse expense(@RequestBody BillDTO billDTO) throws ServiceException {
         return billService.expense(billDTO);
     }
 
     @PostMapping("transfer")
-    public PublicResponse transfer(@RequestBody @Validated TransferDTO transferDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+    public PublicResponse transfer(@RequestBody @Validated TransferDTO transferDTO) throws ServiceException {
         return billService.transfer(transferDTO);
     }
 
@@ -43,7 +43,7 @@ public class BillController {
     }
 
     @GetMapping("filter")
-    public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO, HttpServletRequest httpServletRequest) throws ServiceException {
+    public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO) throws ServiceException {
         return billService.filter(filterDTO);
     }
 }

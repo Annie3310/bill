@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@EqualsAndHashCode(callSuper = true)
 @Builder
 public class FilterDTO extends BaseDTO {
     /*
