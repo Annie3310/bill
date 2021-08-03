@@ -9,12 +9,6 @@ spring:
     url: ENC(LbD5JjxOoF1R5FHReFuoREaV2b3lYhOExDA/X+wXSqWddo+Fc3qWHTjZ6e5zS5Wi65lK/IS1c/o+WOKivQHCJVMWD3DBjTKM+AxQaYzN22WOvR5o6jDuln0SFKzR5Zvrl0zjTYkTbc/zoFEPrll77g==)
     username: ENC(9KBvxEHOvCjZN4UVHi0qnw==)
     password: ENC(SHn0og9pV+mGx5eDqLb6QyI0waAmLlru)
-  jpa:
-    database: mysql
-  redis:
-    host: 127.0.0.1
-    port: 6379
-    database: 3
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
   configuration:
@@ -23,3 +17,6 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8080
+jasypt:
+  encryptor:
+    password: 1ffddab75e0bf3cda4e9eb85d980fb4dcdb0a6121c7ea923019c4268

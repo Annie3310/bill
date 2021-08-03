@@ -3,6 +3,8 @@ package me.wjy.bill;
 import me.wjy.bill.controller.BillController;
 import me.wjy.bill.controller.Error;
 import me.wjy.bill.exception.ServiceException;
+import me.wjy.bill.pojo.dto.BaseDTO;
+import me.wjy.bill.pojo.dto.BillDTO;
 import me.wjy.bill.pojo.po.UserDO;
 import me.wjy.bill.pojo.dto.UserDTO;
 import me.wjy.bill.service.impl.UserServiceImpl;
@@ -21,7 +23,8 @@ class BillApplicationTests {
 
     @Test
     void contextLoads() throws ServiceException {
-
+        BillDTO billDTO = new BillDTO();
+        Assert.assertEquals(true,billDTO instanceof BaseDTO);
     }
 
     @Test

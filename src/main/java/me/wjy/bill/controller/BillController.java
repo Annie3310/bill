@@ -21,23 +21,19 @@ public class BillController {
     public BillController(BillServiceImpl billService) {
         this.billService = billService;
     }
-    // TODO 用切面设置 userId
 
     @PostMapping("income")
     public PublicResponse income(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(billDTO, httpServletRequest);
         return billService.income(billDTO);
     }
 
     @PostMapping("expense")
     public PublicResponse expense(@RequestBody BillDTO billDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(billDTO, httpServletRequest);
         return billService.expense(billDTO);
     }
 
     @PostMapping("transfer")
     public PublicResponse transfer(@RequestBody @Validated TransferDTO transferDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(transferDTO, httpServletRequest);
         return billService.transfer(transferDTO);
     }
 
@@ -48,11 +44,6 @@ public class BillController {
 
     @GetMapping("filter")
     public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO, HttpServletRequest httpServletRequest) throws ServiceException {
-        setUserId(filterDTO, httpServletRequest);
         return billService.filter(filterDTO);
-    }
-
-    private void setUserId(BaseDTO baseDTO, HttpServletRequest httpServletRequest) {
-        baseDTO.setUserId(httpServletRequest.getHeader("id"));
     }
 }

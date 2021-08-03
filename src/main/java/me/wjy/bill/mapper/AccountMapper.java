@@ -1,5 +1,7 @@
 package me.wjy.bill.mapper;
 
+import me.wjy.bill.pojo.dto.AccountDTO;
+import me.wjy.bill.pojo.dto.AccountUpdateDTO;
 import me.wjy.bill.pojo.po.AccountDO;
 import me.wjy.bill.pojo.vo.AccountVO;
 import me.wjy.bill.pojo.dto.BillDTO;
@@ -45,6 +47,12 @@ public interface AccountMapper {
      * @param userId
      * @return
      */
-    List<String> getAllAccount(String userId);
+    List<AccountDO> getAllAccount(String userId);
 
+
+    Integer addAccount(AccountDTO accountDTO);
+    Integer rmAccount(AccountDTO accountDTO);
+    Integer updateAccount(AccountUpdateDTO accountUpdateDTO);
+
+    AccountDO getByName(AccountDTO accountDTO);
 }

@@ -1,5 +1,6 @@
 package me.wjy.bill.pojo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 /**
@@ -11,6 +12,8 @@ import lombok.*;
 @Builder
 @ToString
 public class UserDTO extends BaseDTO {
+    @JsonProperty("userId")
+    String userId;
     String name;
     String password;
 }

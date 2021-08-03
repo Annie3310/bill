@@ -6,4 +6,9 @@
         from user
         where user_id = #{userId}
     </select>
+    <insert id="save" parameterType="me.wjy.bill.pojo.dto.UserDTO">
+        insert into user(user_id, name, password)
+        values (#{userId}, #{name}, #{password})
+    </insert>
+
 </mapper>

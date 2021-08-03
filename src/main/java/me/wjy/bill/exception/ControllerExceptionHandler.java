@@ -1,21 +1,17 @@
 package me.wjy.bill.exception;
 
-import me.wjy.bill.enums.ErrorCodeEnum;
+import me.wjy.bill.enums.ResponseCodeEnum;
 import me.wjy.bill.response.PublicResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 王金义
@@ -46,16 +42,16 @@ public class ControllerExceptionHandler {
         }
         return PublicResponse
                 .builder()
-                .code(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
+                .code(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
                 .message(message)
                 .build();
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public PublicResponse onHttpMessageNotReadableException(HttpMessageNotReadableException httpMessageNotReadableException) {
+    public PublicResponse onHttpMessageNotReadableException() {
         return PublicResponse
                 .builder()
-                .code(ErrorCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
+                .code(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode())
                 .message("参数解析异常")
                 .build();
     }

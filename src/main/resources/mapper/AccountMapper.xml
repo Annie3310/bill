@@ -24,7 +24,47 @@
         where user_id = #{userId}
     </select>
 
-    <select id="getAllAccount" resultType="java.lang.String">
-        select name from account where user_id = #{userId}
+    <insert id="addAccount" parameterType="me.wjy.bill.pojo.dto.AccountDTO">
+        insert into account(name,
+        <if test="balance != null">
+            balance,
+        </if>
+        user_id)
+        values(
+        #{name},
+        <if test="balance != null">
+            #{balance},
+        </if>
+        #{userId}
+        )
+    </insert>
+    <delete id="rmAccount" parameterType="me.wjy.bill.pojo.dto.AccountDTO">
+        delete
+        from account
+        where name = #{name}
+    </delete>
+    <update id="updateAccount" parameterType="me.wjy.bill.pojo.dto.AccountUpdateDTO">
+        update account
+        <trim prefix="set" suffixOverrides=",">
+            <if test="newName != null">
+                name = #{newName},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+        </trim>
+        where user_id = #{userId}
+        and name = #{oldName}
+    </update>
+    <select id="getAllAccount" resultType="me.wjy.bill.pojo.po.AccountDO">
+        select name, balance
+        from account
+        where user_id = #{userId}
+    </select>
+    <select id="getByName" resultType="me.wjy.bill.pojo.po.AccountDO">
+        select name
+        from account
+        where name = #{name}
+          and user_id = #{userId}
     </select>
 </mapper>
