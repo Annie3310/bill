@@ -1,11 +1,14 @@
 package me.wjy.bill.service.impl;
 
+import me.wjy.bill.enums.BillResponseEnum;
 import me.wjy.bill.enums.ResponseCodeEnum;
 import me.wjy.bill.enums.UUIDConfig;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.mapper.AccountMapper;
+import me.wjy.bill.mapper.BillMapper;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
+import me.wjy.bill.pojo.dto.BillDTO;
 import me.wjy.bill.pojo.po.AccountDO;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.utils.SHA256;
@@ -17,6 +20,8 @@ import me.wjy.bill.utils.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -24,17 +29,18 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
  * @author 王金义
  */
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final AccountMapper accountMapper;
+    private final BillServiceImpl billService;
 
-    public UserServiceImpl(UserMapper userMapper, AccountMapper accountMapper) {
+    public UserServiceImpl(UserMapper userMapper, AccountMapper accountMapper, BillServiceImpl billService) {
         this.userMapper = userMapper;
         this.accountMapper = accountMapper;
+        this.billService = billService;
     }
 
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -69,13 +75,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PublicResponse addAccount(AccountDTO accountDTO) throws ServiceException {
         AccountDO name = accountMapper.getByName(accountDTO);
         if (name != null) {
             throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "该账户已经存在", null);
         }
-        Integer integer = accountMapper.addAccount(accountDTO);
-        if (integer == null || integer < 1) {
+        Double money = accountDTO.getBalance();
+        accountDTO.setBalance(0D);
+        int accountInsert = accountMapper.addAccount(accountDTO);
+        BillDTO billDTO = BillDTO
+                .builder()
+                .account(accountDTO.getName())
+                .description("创建账户")
+                .money(money == null ? 0 : money)
+                .build();
+        billDTO.setUserId(accountDTO.getUserId());
+        PublicResponse income = billService.income(billDTO);
+        if (accountInsert < 1 || Objects.equals(income.getCode(), BillResponseEnum.INCOME_SUCCESS.getResponseCode())) {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "插入未成功", null);
         }
         return PublicResponse
@@ -101,12 +118,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public PublicResponse updateAccount(AccountUpdateDTO accountUpdateDTO) throws ServiceException {
         AccountDTO accountDTO = new AccountDTO();
-        if (accountUpdateDTO.getBalance() != null) {
-            accountDTO.setBalance(accountUpdateDTO.getBalance());
+        if (accountUpdateDTO.getBalance() == null & accountUpdateDTO.getNewName() == null) {
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "未输入需要修改的数据", null);
         }
-        if (accountUpdateDTO.getOldName() != null) {
-            accountDTO.setName(accountUpdateDTO.getOldName());
-        }
+        accountDTO.setName(accountUpdateDTO.getOldName());
         accountDTO.setUserId(accountUpdateDTO.getUserId());
         AccountDO name = accountMapper.getByName(accountDTO);
         if (name == null) {

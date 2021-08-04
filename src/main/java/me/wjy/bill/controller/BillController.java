@@ -1,6 +1,7 @@
 package me.wjy.bill.controller;
 
 import me.wjy.bill.annotation.GetUserId;
+import me.wjy.bill.annotation.SetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.*;
 import me.wjy.bill.response.PublicResponse;
@@ -25,13 +26,13 @@ public class BillController {
 
     @GetUserId
     @PostMapping("income")
-    public PublicResponse income(@RequestBody BillDTO billDTO) throws ServiceException {
+    public PublicResponse income(@RequestBody @Validated BillDTO billDTO) throws ServiceException {
         return billService.income(billDTO);
     }
 
     @GetUserId
     @PostMapping("expense")
-    public PublicResponse expense(@RequestBody BillDTO billDTO) throws ServiceException {
+    public PublicResponse expense(@RequestBody @Validated BillDTO billDTO) throws ServiceException {
         return billService.expense(billDTO);
     }
 
@@ -43,8 +44,9 @@ public class BillController {
 
     @GetUserId
     @GetMapping("sum")
-    public PublicResponse getSum(HttpServletRequest httpServletRequest) throws ServiceException {
-        return billService.getSum(httpServletRequest.getHeader("id"));
+    public PublicResponse getSum(@RequestBody UserDTO userDTO) throws ServiceException {
+        String id = userDTO.getUserId();
+        return billService.getSum(id);
     }
 
     @GetUserId

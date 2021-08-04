@@ -1,7 +1,11 @@
 package me.wjy.bill.aspect;
 
+import me.wjy.bill.enums.ResponseCodeEnum;
+import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.BaseDTO;
+import me.wjy.bill.utils.JWTUtil;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -21,23 +25,31 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class PublicControllerAspect {
+    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
     private final Logger logger = LoggerFactory.getLogger(PublicControllerAspect.class);
 
     @Pointcut("@annotation(me.wjy.bill.annotation.GetUserId)")
-    public void getUserId(){}
+    public void getUserId() {
+    }
 
     @Before("getUserId()")
-    public void setUserId(JoinPoint joinPoint) {
+    public void setUserId(JoinPoint joinPoint) throws ServiceException {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         assert servletRequestAttributes != null;
         HttpServletRequest httpServletRequest = servletRequestAttributes.getRequest();
-        String id = httpServletRequest.getHeader("id");
+        String token = httpServletRequest.getHeader("token");
+        String id;
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getName();
+        if (token != null) {
+            id = JWTUtil.checkToken(token);
+        } else {
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未携带 token", null);
+        }
         if (id == null) {
-            logger.warn(className + "." + methodName + " id 或 password 为空");
-            return;
+            logger.warn(className + "." + methodName + "Token 验证未通过");
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "token 不正确", null);
         }
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
@@ -46,4 +58,5 @@ public class PublicControllerAspect {
             }
         }
     }
+
 }

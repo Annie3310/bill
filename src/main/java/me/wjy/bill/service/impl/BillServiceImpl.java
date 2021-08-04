@@ -21,6 +21,8 @@ import me.wjy.bill.utils.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -77,8 +79,7 @@ public class BillServiceImpl implements BillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse income(BillDTO billDTO) throws ServiceException {
-        boolean accountNotExist = isAccountNotExist(billDTO.getUserId(), billDTO.getAccount());
-        if (accountNotExist) {
+        if (isAccountNotExist(billDTO.getUserId(), billDTO.getAccount())) {
             throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
         }
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
@@ -101,11 +102,11 @@ public class BillServiceImpl implements BillService {
         return PublicResponse.builder()
                 .code(BillResponseEnum.INCOME_SUCCESS.getResponseCode())
                 .message(stringBuilder
-                        .append("从")
+                        .append(" ")
                         .append(billDTO.getAccount())
-                        .append("收入了")
+                        .append(" 收入了 ")
                         .append(billDTO.getMoney())
-                        .append("元")
+                        .append(" 元")
                         .toString())
                 .result(effectiveRowsOfBill).build();
     }
@@ -113,8 +114,7 @@ public class BillServiceImpl implements BillService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse expense(BillDTO billDTO) throws ServiceException {
-        boolean accountNotExist = isAccountNotExist(billDTO.getUserId(), billDTO.getAccount());
-        if (accountNotExist) {
+        if (isAccountNotExist(billDTO.getUserId(), billDTO.getAccount())) {
             throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
         }
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
@@ -136,11 +136,11 @@ public class BillServiceImpl implements BillService {
         return PublicResponse.builder()
                 .code(BillResponseEnum.EXPENSE_SUCCESS.getResponseCode())
                 .message(stringBuilder
-                        .append("从")
+                        .append(" 从 ")
                         .append(billDTO.getAccount())
-                        .append("支出了")
+                        .append(" 支出了 ")
                         .append(billDTO.getMoney())
-                        .append("元")
+                        .append(" 元")
                         .toString())
                 .result(effectiveRowsOfBill)
                 .build();
@@ -153,8 +153,12 @@ public class BillServiceImpl implements BillService {
         HashMap<String, BillDTO> map = transferToBill(transferDTO);
         BillDTO from = map.get("from");
         BillDTO to = map.get("to");
+        // 判重和判空
         if (Objects.equals(from.getAccount(), to.getAccount())) {
             throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "两个请求账户相同", null);
+        }
+        if (isAccountNotExist(transferDTO.getUserId(), from.getAccount(), to.getAccount())) {
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未找到账户", null);
         }
         // 账单插入是否生效
         logger.info("transfer 开始生成转账 From 账单");
@@ -175,20 +179,20 @@ public class BillServiceImpl implements BillService {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "转账失败", null);
         }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.TRANSFER_SUCCESS.getMessage());
+        String description = transferDTO.getDescription();
+        stringBuilder
+                .append(", 从 ")
+                .append(transferDTO.getFrom())
+                .append(" 转出 ")
+                .append(transferDTO.getMoney())
+                .append(" 元到 ")
+                .append(transferDTO.getTo());
+        if (description != null) {
+            stringBuilder.append(" : ").append(description);
+        }
         return PublicResponse.builder()
                 .code(BillResponseEnum.TRANSFER_SUCCESS.getResponseCode())
-                .message(
-                        stringBuilder
-                                .append(", 从 ")
-                                .append(transferDTO.getFrom())
-                                .append(" 转出 ")
-                                .append(transferDTO.getMoney())
-                                .append(" 元到 ")
-                                .append(transferDTO.getTo())
-                                .append(" : ")
-                                .append(transferDTO.getDescription())
-                                .toString()
-                )
+                .message(stringBuilder.toString())
                 .build();
     }
 
@@ -254,14 +258,18 @@ public class BillServiceImpl implements BillService {
         return map;
     }
 
-    private boolean isAccountNotExist(String userId, String account) {
-        List<AccountDO> allAccount = accountMapper.getAllAccount(userId);
-        for (AccountDO accountDO : allAccount) {
-            if (Objects.equals(accountDO.getName(), account)) {
-                return true;
+    private boolean isAccountNotExist(String userId, String... account) {
+        int flag = 0;
+        for (String s : account) {
+            List<AccountDO> allAccount = accountMapper.getAllAccount(userId);
+            for (AccountDO accountDO : allAccount) {
+                if (Objects.equals(accountDO.getName(), s)) {
+                    flag++;
+                    break;
+                }
             }
         }
-        return false;
+        return flag < account.length;
     }
 
     private BillVO billDOToBillVO(BillDO billDO) {
@@ -275,4 +283,5 @@ public class BillServiceImpl implements BillService {
                 .uuid(billDO.getUuid())
                 .build();
     }
+
 }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 public class AccountUpdateDTO extends BaseDTO{
-    @NotNull
+    @NotNull(message = "名字不能为空")
     String oldName;
     String newName;
     @Digits(integer = 12, fraction = 2)

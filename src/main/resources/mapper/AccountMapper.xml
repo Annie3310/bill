@@ -42,6 +42,7 @@
         delete
         from account
         where name = #{name}
+          and user_id = #{userId}
     </delete>
     <update id="updateAccount" parameterType="me.wjy.bill.pojo.dto.AccountUpdateDTO">
         update account
