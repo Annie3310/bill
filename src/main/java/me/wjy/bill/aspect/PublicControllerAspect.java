@@ -5,7 +5,6 @@ import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.BaseDTO;
 import me.wjy.bill.utils.JWTUtil;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 public class PublicControllerAspect {
-    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
     private final Logger logger = LoggerFactory.getLogger(PublicControllerAspect.class);
 
     @Pointcut("@annotation(me.wjy.bill.annotation.GetUserId)")

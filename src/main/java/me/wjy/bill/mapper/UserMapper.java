@@ -26,5 +26,10 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
     Integer save(UserDTO userDTO);
 
+    /**
+     * 更新
+     * @param userDTO require: oldName
+     * @return 受影响的行数
+     */
     Integer update(UserDTO userDTO);
 }

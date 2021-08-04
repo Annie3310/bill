@@ -4,7 +4,6 @@ import me.wjy.bill.annotation.GetUserId;
 import me.wjy.bill.enums.ResponseCodeEnum;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.UserDTO;
-import me.wjy.bill.pojo.po.UserDO;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.service.impl.UserServiceImpl;
 import me.wjy.bill.utils.JWTUtil;

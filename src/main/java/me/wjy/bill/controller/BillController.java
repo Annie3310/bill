@@ -1,15 +1,12 @@
 package me.wjy.bill.controller;
 
 import me.wjy.bill.annotation.GetUserId;
-import me.wjy.bill.annotation.SetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.*;
 import me.wjy.bill.response.PublicResponse;
 import me.wjy.bill.service.impl.BillServiceImpl;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author 王金义

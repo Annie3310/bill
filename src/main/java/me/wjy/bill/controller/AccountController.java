@@ -1,7 +1,6 @@
 package me.wjy.bill.controller;
 
 import me.wjy.bill.annotation.GetUserId;
-import me.wjy.bill.annotation.SetUserId;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;

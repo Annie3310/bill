@@ -5,7 +5,6 @@ import me.wjy.bill.enums.ResponseCodeEnum;
 import me.wjy.bill.enums.UUIDConfig;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.mapper.AccountMapper;
-import me.wjy.bill.mapper.BillMapper;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
 import me.wjy.bill.pojo.dto.BillDTO;
@@ -20,8 +19,6 @@ import me.wjy.bill.utils.UUIDUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
