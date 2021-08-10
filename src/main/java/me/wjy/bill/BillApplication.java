@@ -21,6 +21,7 @@ public class BillApplication {
             在 token 中携带 id 参数, 如果 token 认证通过, 则每次在切面中从 token 中获取 id 值, 传入 DTO 中
      */
     // TODO 修改账户相关的操作时, 需要重新提供 ID 和密码
+    // TODO 规范密码格式
 
 
     public static void main(String[] args) {

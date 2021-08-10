@@ -1,16 +1,25 @@
 # 账单
 该项目是基于 Spring Boot 的账单接口, 提供多用户与多账户功能.
-## Bill API 接口请求参数
-baseURL: localhost:xxxx/bill/?
+
+## TODO
+
+- 规范密码格式
+- 修改账户相关的操作时, 需要重新提供 ID 和密码
+
 ### 用户认证
-// TODO 用户相关功能, 如添加用户, 修改密码等
 
 **!! 需要在请求头中添加**
 
+获取 token 见 `user 接口 --> get_token`
+
 | 字段名|用途 |
 | :---:|:---: |
-| id | 用户 id  |
-| password | 用户密码  |
+| token | 验证 |
+
+## bill 接口
+
+接口 URL: localhost:8080/bill/
+
 ### income (Post)
 入账接口
 
@@ -19,6 +28,7 @@ baseURL: localhost:xxxx/bill/?
 | money | 金额 | 是 | 必须是数字类型, 否则会报错 |
 | account | 账户 | 是 | 必须是用户已有的账户, 否则会报错 |
 | description | 说明 | 否 | 对该笔记录的说明 |
+
 ### expense (Post)
 支出接口 (实际与入账调用的是同一个 dao 层方法, 只是 type (0: 支出, 1: 收入) 不同)
 
@@ -27,6 +37,7 @@ baseURL: localhost:xxxx/bill/?
 | money | 金额 | 是 | 必须是数字类型, 否则会报错 |
 | account | 账户 | 是 | 必须是用户已有的账户, 否则会报错 |
 | description | 说明 | 否 | 对该笔记录的说明 |
+
 ### transfer (Post)
 转账接口, 因该接口是面向单用户的接口, 所以只能在自己的账号中对对自己的多个账户进行转账.
 
@@ -36,8 +47,10 @@ baseURL: localhost:xxxx/bill/?
 | from | 转出账户 | 是 | 转账的支出账户, 不能与 to 账户名相同, 否则会报错 |
 | to | 转入账户 | 是 | 转账的收入账户, 不能与 from 账户名相同, 否则会报错 |
 | description | 说明 | 否 | 对该笔记录的说明 |
+
 ### sum (Get)
 获取当前总资产的详情
+
 ### filter (Get)
 多条件模糊查找
 
@@ -50,104 +63,76 @@ baseURL: localhost:xxxx/bill/?
 | greaterThan | 金额大于某值 | 否 | 必须是数字类型, 否则会报错 |
 | lessThan | 金额小于某值 | 否 | 必须是数字类型, 否则会报错 |
 
-## Bill API 接口返回参数
-### income
-请求
-```json
-{
-    "account":"alipay",
-    "money":1
-}
-```
-返回
-```json
-{
-    "code": "00000",
-    "message": "收入成功从alipay收入了1.0元",
-    "result": 1
-}
-```
-### expense
-请求
-```json
-{
-    "account":"alipay",
-    "money":1
-}
-```
-返回
-```json
-{
-    "code": "00000",
-    "message": "支出成功从alipay支出了1.0元",
-    "result": 1
-}
-```
-### transfer
-请求
-```json
-{
-    "from":"alipay",
-    "to":"wechat",
-    "description": "测试",
-    "money":1
-}
-```
-返回
-```json
-{
-    "code": "00000",
-    "message": "转账成功, 从 alipay 转出 1.0 元到 wechat : 测试",
-    "result": null
-}
-```
-### sum
-返回
-```json
-{
-    "code": "00000",
-    "message": "获取总合成功",
-    "result": {
-        "details": {
-            "icbc_c": 0.0,
-            "alipay": 0.0,
-            "ccb": 0.0,
-            "wechat": 0.0,
-            "cmb": 0.0,
-            "icbc": 0.0,
-            "cmb_c": 0.0,
-            "crash": 0.0
-        },
-        "sum": 0.0
-    }
-}
-```
-### filter
-请求
-```json
-{
-    "startDate":"2021-07-29",
-    "endDate":"2021-07-29"
-}
-```
-返回
-```json
-{
-    "code": "00000",
-    "message": "筛选成功, 共18条",
-    "result": [
-        {
-            "id": null,
-            "uuid": "xxx",
-            "money": 10.0,
-            "description": "测试",
-            "account": "alipay",
-            "type": 1,
-            "createTime": "2021-07-29 16:11:56",
-            "updateTime": "2021-07-29 16:11:56",
-            "deleted": 0
-        }
-        // ... 省略
-    ]
-}
-```
+## Account 接口
+
+接口 URL: localhost:8080/account
+
+### (Get)
+
+获取所有当前用户的账户
+
+### (Post)
+
+为当前用户添加一个账户
+
+| 参数名  |   说明   | 是否必填 |   值规范   |
+| :-----: | :------: | :------: | :--------: |
+|  name   |  账户名  |    是    |     无     |
+| balance | 账户余额 |    否    | 只能是数字 |
+
+### (Delete)
+
+为当前用户删除一个账户
+
+| 参数名 |  说明  | 是否必填 | 值规范 |
+| :----: | :----: | :------: | :----: |
+|  name  | 账户名 |    是    |   无   |
+
+### (Update)
+
+更新账户信息
+
+| 参数名  |   说明   |        是否必填        |   值规范   |
+| :-----: | :------: | :--------------------: | :--------: |
+| oldName | 旧账户名 |           是           |     无     |
+| newName | 新账户名 | 是 (如果 balance 为空) |     无     |
+| balance | 账户余额 | 是 (如果 newName 为空) | 只能是数字 |
+
+## user 接口
+
+接口 URL: localhost:8080/user/
+
+### get_token (Get)
+
+用户认证, 获取 token (有效期 1 个月)
+
+|  参数名  |   说明   | 是否必填 | 值规范 |
+| :------: | :------: | :------: | :----: |
+|    id    | 用户 ID  |    是    |   无   |
+| password | 用户密码 |    是    |   无   |
+
+### register (Post)
+
+注册一个账号
+
+|  参数名  |  说明  | 是否必填 | 值规范 |
+| :------: | :----: | :------: | :----: |
+|   name   | 用户名 |    是    |   无   |
+| password |  密码  |    是    |   无   |
+
+### password (Put)
+
+更改密码
+
+|  参数名  |  说明  | 是否必填 | 值规范 |
+| :------: | :----: | :------: | :----: |
+| password | 新密码 |    是    |   无   |
+
+### name (Put)
+
+更改用户名
+
+| 参数名 |  说明  | 是否必填 | 值规范 |
+| :----: | :----: | :------: | :----: |
+|  name  | 用户名 |    是    |   无   |
+

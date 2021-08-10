@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
                 .build();
         billDTO.setUserId(accountDTO.getUserId());
         PublicResponse income = billService.income(billDTO);
-        if (accountInsert < 1 || Objects.equals(income.getCode(), BillResponseEnum.INCOME_SUCCESS.getResponseCode())) {
+        if (accountInsert < 1 || !Objects.equals(income.getCode(), BillResponseEnum.INCOME_SUCCESS.getResponseCode())) {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "插入未成功", null);
         }
         return PublicResponse

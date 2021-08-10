@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetUserId
-    @PostMapping("name")
+    @PutMapping("name")
     public PublicResponse updateName(@RequestBody UserDTO userDTO) throws ServiceException {
         return userService.updateName(userDTO);
     }
