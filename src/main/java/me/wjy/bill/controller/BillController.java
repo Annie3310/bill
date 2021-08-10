@@ -41,13 +41,13 @@ public class BillController {
 
     @GetUserId
     @GetMapping("sum")
-    public PublicResponse getSum(@RequestBody UserDTO userDTO) throws ServiceException {
+    public PublicResponse getSum(UserDTO userDTO) throws ServiceException {
         String id = userDTO.getUserId();
         return billService.getSum(id);
     }
 
     @GetUserId
-    @GetMapping("filter")
+    @PostMapping("filter")
     public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO) throws ServiceException {
         return billService.filter(filterDTO);
     }

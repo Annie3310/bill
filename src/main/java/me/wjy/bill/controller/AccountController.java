@@ -40,7 +40,7 @@ public class AccountController {
 
     @GetUserId
     @GetMapping("account")
-    public PublicResponse getAllAccount( @RequestBody AccountDTO accountDTO) throws ServiceException {
+    public PublicResponse getAllAccount(AccountDTO accountDTO) throws ServiceException {
         return userService.getAllAccount(accountDTO.getUserId());
     }
 }
