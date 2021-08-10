@@ -102,7 +102,7 @@
 
 接口 URL: localhost:8080/user/
 
-### get_token (Get)
+### get_token (Post)
 
 用户认证, 获取 token (有效期 1 个月)
 
