@@ -29,38 +29,6 @@ public interface UserService {
     PublicResponse register(UserDTO userDTO) throws ServiceException;
 
     /**
-     * 为用户添加一个账户
-     * @param accountDTO require: name
-     * @return 通用返回体
-     * @throws ServiceException 通用异常类
-     */
-    PublicResponse addAccount(AccountDTO accountDTO) throws ServiceException;
-
-    /**
-     * 删除一个账户
-     * @param accountDTO require: name
-     * @return 通用返回体
-     * @throws ServiceException 通用异常类
-     */
-    PublicResponse rmAccount(AccountDTO accountDTO) throws ServiceException;
-
-    /**
-     * 更新一个账户
-     * @param accountUpdateDTO require: oldName
-     * @return 通用返回体
-     * @throws ServiceException 通用异常类
-     */
-    PublicResponse updateAccount(AccountUpdateDTO accountUpdateDTO) throws ServiceException;
-
-    /**
-     * 获取所有的账户信息
-     * @param userId 用户 ID
-     * @return 通用返回体
-     * @throws ServiceException 通用异常类
-     */
-    PublicResponse getAllAccount(String userId) throws ServiceException;
-
-    /**
      * 更改密码
      * @param userDTO 新的信息
      * @return 通用返回体

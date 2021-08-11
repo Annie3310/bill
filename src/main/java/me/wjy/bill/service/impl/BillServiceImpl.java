@@ -58,6 +58,7 @@ public class BillServiceImpl implements BillService {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到总和", null);
         }
         Map<String, Double> detailsMap = new HashMap<>(16);
+        // TODO 如果金额 = 0, 则不显示该账户 --> 有待商榷
         for (AccountVO sumDetail : sumDetails) {
             detailsMap.put(sumDetail.getName(), sumDetail.getBalance());
         }

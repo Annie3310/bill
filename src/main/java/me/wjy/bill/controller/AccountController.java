@@ -5,7 +5,7 @@ import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
 import me.wjy.bill.response.PublicResponse;
-import me.wjy.bill.service.impl.UserServiceImpl;
+import me.wjy.bill.service.AccountService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,31 +16,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Validated
 public class AccountController {
-    private final UserServiceImpl userService;
+    private final AccountService accountService;
 
-    public AccountController(UserServiceImpl userService) {
-        this.userService = userService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
+
     @GetUserId
     @PostMapping("account")
     public PublicResponse addAccount(@RequestBody @Validated AccountDTO accountDTO) throws ServiceException {
-        return userService.addAccount(accountDTO);
+        return accountService.addAccount(accountDTO);
     }
     @GetUserId
     @DeleteMapping("account")
     public PublicResponse rmAccount(@RequestBody @Validated AccountDTO accountDTO) throws ServiceException {
-        return userService.rmAccount(accountDTO);
+        return accountService.rmAccount(accountDTO);
     }
 
     @GetUserId
     @PutMapping("account")
     public PublicResponse updateAccount(@RequestBody @Validated AccountUpdateDTO accountUpdateDTO) throws ServiceException {
-        return userService.updateAccount(accountUpdateDTO);
+        return accountService.updateAccount(accountUpdateDTO);
     }
 
     @GetUserId
     @GetMapping("account")
     public PublicResponse getAllAccount(AccountDTO accountDTO) throws ServiceException {
-        return userService.getAllAccount(accountDTO.getUserId());
+        return accountService.getAllAccount(accountDTO.getUserId());
     }
 }
