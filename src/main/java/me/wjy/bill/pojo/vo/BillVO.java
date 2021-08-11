@@ -15,6 +15,6 @@ public class BillVO{
     String uuid;
     Double money;
     String account;
-    Integer type;
+    String type;
     String createTime;
 }

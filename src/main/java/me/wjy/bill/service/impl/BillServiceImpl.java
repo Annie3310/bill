@@ -279,7 +279,7 @@ public class BillServiceImpl implements BillService {
                 .createTime(billDO.getCreateTime())
                 .description(billDO.getDescription())
                 .money(billDO.getMoney())
-                .type(billDO.getType())
+                .type(billDO.getType() == 0 ? BillTypeEnum.EXPENSE.getName() : BillTypeEnum.INCOME.getName())
                 .uuid(billDO.getUuid())
                 .build();
     }
