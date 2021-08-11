@@ -51,16 +51,12 @@ public class BillServiceImpl implements BillService {
             logger.warn("getSum 获取账户余额失败: {}", sumDetails);
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到账户详细信息", null);
         }
-        logger.info("getSum 获取账户总和");
-        Double sum = accountMapper.getSum(userId);
-        if (sum <= 0 && sumDetails.isEmpty()) {
-            logger.warn("getSum 获取余额总和失败: {}", sum);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到总和", null);
-        }
+        Double sum = 0D;
         Map<String, Double> detailsMap = new HashMap<>(16);
         for (AccountVO sumDetail : sumDetails) {
             if (sumDetail.getBalance() != 0) {
                 detailsMap.put(sumDetail.getName(), sumDetail.getBalance());
+                sum+=sumDetail.getBalance();
             }
         }
         GetSumResponse sumResponse = GetSumResponse
