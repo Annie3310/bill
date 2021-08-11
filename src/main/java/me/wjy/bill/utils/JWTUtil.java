@@ -22,7 +22,7 @@ public class JWTUtil {
     /**
      * 失效时间
      */
-    private static final Long EFFECTIVE_TIME = TimeUnit.DAYS.toMillis(30);
+    private static final Long EFFECTIVE_TIME = TimeUnit.HOURS.toMillis(2);
     /**
      * 签名算法
      */
