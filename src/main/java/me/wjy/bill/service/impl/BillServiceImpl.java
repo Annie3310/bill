@@ -94,16 +94,16 @@ public class BillServiceImpl implements BillService {
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单添加失败", null);
         }
         if (effectiveRowsOfAccount <= 0) {
-            logger.warn("income 向账户转账失败: {}", effectiveRowsOfAccount);
+            logger.warn("income 向账户添加金额失败: {}", effectiveRowsOfAccount);
             throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "交易执行失败", null);
         }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.INCOME_SUCCESS.getMessage());
         return PublicResponse.builder()
                 .code(BillResponseEnum.INCOME_SUCCESS.getResponseCode())
                 .message(stringBuilder
-                        .append(" ")
+                        .append("'")
                         .append(billDTO.getAccount())
-                        .append(" 收入了 ")
+                        .append("'收入了 ")
                         .append(billDTO.getMoney())
                         .append(" 元")
                         .toString())
@@ -135,9 +135,9 @@ public class BillServiceImpl implements BillService {
         return PublicResponse.builder()
                 .code(BillResponseEnum.EXPENSE_SUCCESS.getResponseCode())
                 .message(stringBuilder
-                        .append(" 从 ")
+                        .append(" 从'")
                         .append(billDTO.getAccount())
-                        .append(" 支出了 ")
+                        .append("'支出了 ")
                         .append(billDTO.getMoney())
                         .append(" 元")
                         .toString())
