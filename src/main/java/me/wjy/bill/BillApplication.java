@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan
 @EnableTransactionManagement
 public class BillApplication {
-    // TODO 规范密码格式
-
     public static void main(String[] args) {
         SpringApplication.run(BillApplication.class, args);
     }

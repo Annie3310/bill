@@ -3,6 +3,7 @@ package me.wjy.bill.pojo.dto;
 import lombok.*;
 
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -21,6 +22,7 @@ public class TransferDTO extends BaseDTO {
     String to;
     @NotNull(message = "金额不能为空")
     @Digits(integer = 12, fraction = 2)
+    @Min(value = 0, message = "金额不能为负数")
     Double money;
     String description;
 }
