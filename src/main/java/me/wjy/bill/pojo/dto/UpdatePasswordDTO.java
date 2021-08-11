@@ -1,9 +1,9 @@
 package me.wjy.bill.pojo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author 王金义
@@ -13,7 +13,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class UpdatePasswordDTO extends BaseDTO{
+    @NotNull(message = "输入的密码不能为空")
+    @Size(message = "密码长度应该在 8 到 20 之间", max = 20, min = 8)
     String oldPassword;
+
+    @NotNull(message = "输入的密码不能为空")
+    @Size(message = "密码长度应该在 8 到 20 之间", max = 20, min = 8)
     String newPassword;
 }

@@ -3,6 +3,7 @@ package me.wjy.bill.service;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.pojo.dto.AccountDTO;
 import me.wjy.bill.pojo.dto.AccountUpdateDTO;
+import me.wjy.bill.pojo.dto.UpdatePasswordDTO;
 import me.wjy.bill.pojo.po.UserDO;
 import me.wjy.bill.pojo.dto.UserDTO;
 import me.wjy.bill.response.PublicResponse;
@@ -30,11 +31,11 @@ public interface UserService {
 
     /**
      * 更改密码
-     * @param userDTO 新的信息
+     * @param updatePasswordDTO 新的信息
      * @return 通用返回体
      * @throws ServiceException 通用异常类
      */
-    PublicResponse updatePassword(UserDTO userDTO) throws ServiceException;
+    PublicResponse updatePassword(UpdatePasswordDTO updatePasswordDTO) throws ServiceException;
 
     /**
      * 更改姓名

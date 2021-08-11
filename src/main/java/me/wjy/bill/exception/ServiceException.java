@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ServiceException extends Exception{
+public class ServiceException extends RuntimeException{
     private String errorCode;
     private String errorMessage;
     private String stackTraceLog;

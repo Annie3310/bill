@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan
 @EnableTransactionManagement
 public class BillApplication {
-    // TODO 修改账户相关的操作时, 需要重新提供 ID 和密码
     // TODO 规范密码格式
 
     public static void main(String[] args) {

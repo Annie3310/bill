@@ -17,7 +17,10 @@
                 name = #{name},
             </if>
             <if test="password != null">
-                password = #{password}
+                password = #{password},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
             </if>
         </trim>
         where user_id = #{userId}
