@@ -2,6 +2,7 @@ package me.wjy.bill.pojo.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
@@ -43,11 +44,13 @@ public class FilterDTO extends BaseDTO {
     /**
      * 金额大于
      */
-    @Min(0)
+    @Min(value = 0, message = "金额不能为负数")
+    @Digits(integer = 12, fraction = 2)
     Double greaterThan;
     /**
      * 金额小于
      */
-    @Min(0)
+    @Min(value = 0, message = "金额不能为负数")
+    @Digits(integer = 12, fraction = 2)
     Double lessThan;
 }
