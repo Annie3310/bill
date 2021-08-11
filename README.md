@@ -2,11 +2,6 @@
 
 该项目是基于 Spring Boot 的账单接口, 提供多用户与多账户功能.
 
-## TODO
-
-- 规范密码格式
-- 修改账户相关的操作时, 需要重新提供 ID 和密码
-
 ### 用户认证
 
 **!! 需要在请求头中添加**
@@ -144,3 +139,55 @@
 |  name  | 用户名 |    是    |   无   |
 |  password  | 密码 |    是    |   大于 8 位, 小于 20 位, 不可以有空格   |
 
+## 建表语句
+
+account 表 (账户表)
+
+```sql
+CREATE TABLE `account`
+(
+    `id`      int         NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
+    `name`    varchar(20) NOT NULL COMMENT '账户名',
+    `balance` double(12, 2
+) NOT NULL DEFAULT '0.00' COMMENT '余额',
+  `user_id` varchar(255) NOT NULL COMMENT '用户 ID',
+  PRIMARY KEY (`id`),
+  KEY `Idx_userId` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+bill 表 (账单表)
+
+```sql
+CREATE TABLE `bill`
+(
+    `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `uuid`        varchar(129) NOT NULL COMMENT '查询用唯一 uuid',
+    `type`        tinyint      NOT NULL DEFAULT '0' COMMENT '账单类型',
+    `money`       double       NOT NULL COMMENT '金额',
+    `account`     varchar(20)           DEFAULT 'wechat' COMMENT '账单账户',
+    `description` varchar(100) NOT NULL DEFAULT '' COMMENT '账单备注',
+    `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更改时间',
+    `deleted`     tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已删除',
+    `user_id`     varchar(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY           `bill_uuid_index` (`uuid`),
+    KEY           `bill__userId_index` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
+
+user 表 (用户表)
+
+```sql
+CREATE TABLE `user`
+(
+    `id`       bigint       NOT NULL AUTO_INCREMENT,
+    `user_id`  varchar(255) NOT NULL COMMENT '用户 id',
+    `name`     varchar(20)  NOT NULL COMMENT '用户姓名',
+    `password` varchar(255) NOT NULL,
+    `salt`     bigint       NOT NULL COMMENT 'salt 值',
+    PRIMARY KEY (`id`),
+    KEY        `Idx_userId` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
