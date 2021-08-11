@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="me.wjy.bill.mapper.UserMapper">
     <select id="getUser" parameterType="me.wjy.bill.pojo.dto.UserDTO" resultType="me.wjy.bill.pojo.po.UserDO">
-        select id, user_id, name, password
+        select id, user_id, name, password, salt
         from user
         where user_id = #{userId}
     </select>
     <insert id="save" parameterType="me.wjy.bill.pojo.dto.UserDTO">
-        insert into user(user_id, name, password)
-        values (#{userId}, #{name}, #{password})
+        insert into user(user_id, name, password, salt)
+        values (#{userId}, #{name}, #{password}, #{salt})
     </insert>
     <update id="update">
         update user

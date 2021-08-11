@@ -16,4 +16,5 @@ public class UserDTO extends BaseDTO {
     String userId;
     String name;
     String password;
+    Long salt;
 }

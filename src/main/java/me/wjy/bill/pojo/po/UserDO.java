@@ -18,6 +18,7 @@ public class UserDO{
     String userId;
     String name;
     String password;
+    Long salt;
 
     @Override
     public boolean equals(Object o) {
