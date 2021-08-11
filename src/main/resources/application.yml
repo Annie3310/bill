@@ -2,13 +2,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 本地
-#    url: ENC(vm2nzFwkSpwT4ERKN1SaWprrxEn1xChA7CV8knlsyCc/S0Ikad8bDQSvZ2AZn9LEltyzVhuQYFcLBAb+rpvD+8za9gL/lNlS0sTUdRab2luHz/yfJ9X+ZMfw0CTzSxGRaisNAY+Q1f8=)
-#    username: ENC(lvix7hgGmVxH90gF3cKfiQ==)
-#    password: ENC(7AeyNOakE0Sd1Crtb1PVN/uo/daaUou1)
+    url: ENC(YtM8eOUx/ZstPau/Ovsrvp0yTWwNG5Q2IeZd3ha6hO6SnVWLwec97OcmTYdwrU4K70bxxRnc2iB9ixnxyoCINPRG6p2zEoEAdTWreCbJaLH+x5RNTrppwcZ434YyB8UGMPK9ub5hlZo=)
+    username: ENC(6zCJB5ojsIhi552jSTHdwA==)
+    password: ENC(PX31Oz6CWL9//cY1YFnV2STMJyS73TvT)
   # 远程
-    url: ENC(LbD5JjxOoF1R5FHReFuoREaV2b3lYhOExDA/X+wXSqWddo+Fc3qWHTjZ6e5zS5Wi65lK/IS1c/o+WOKivQHCJVMWD3DBjTKM+AxQaYzN22WOvR5o6jDuln0SFKzR5Zvrl0zjTYkTbc/zoFEPrll77g==)
-    username: ENC(9KBvxEHOvCjZN4UVHi0qnw==)
-    password: ENC(SHn0og9pV+mGx5eDqLb6QyI0waAmLlru)
+#    url: ENC(7Wvqc1NRK9VJZvArxt/X+Y3xyuB3Do4vfq0TltaxN7zPjy1PzPAZ2I2+YoZIMcS+YjLTKK+2udeSZ/1BTxGDgpT9zUXkXWvl6SBkUFOtFjDvo8fdtqOx3gX+ZOIT/enC2b+8d/3/9/1TXeOtnuxQdA==)
+#    username: ENC(W2W7MkYuuCa1/qhR4Gvzaw==)
+#    password: ENC(NOZbMSQVBbXBFULwvXGRoST+hU+RJV4M)
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
   configuration:
@@ -17,6 +17,3 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8080
-jasypt:
-  encryptor:
-    password: 1ffddab75e0bf3cda4e9eb85d980fb4dcdb0a6121c7ea923019c4268

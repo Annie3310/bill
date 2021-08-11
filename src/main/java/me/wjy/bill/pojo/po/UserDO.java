@@ -2,6 +2,7 @@ package me.wjy.bill.pojo.po;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 import java.util.Objects;
 
@@ -36,4 +37,5 @@ public class UserDO{
     public int hashCode() {
         return Objects.hash(userId);
     }
+
 }
