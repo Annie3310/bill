@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author 王金义
  * @date 2021/8/3
+ * {@link me.wjy.bill.annotation.GetUserId}
  */
 @Aspect
 @Component

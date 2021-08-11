@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author 王金义
  * @date 2021/8/11
+ * {@link me.wjy.bill.annotation.VerifySpace}
  */
 @Aspect
 @Component
