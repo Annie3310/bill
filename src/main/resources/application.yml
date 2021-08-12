@@ -11,8 +11,12 @@ spring:
     password: ENC(NOZbMSQVBbXBFULwvXGRoST+hU+RJV4M)
   redis:
     database: 4
+    # 远程
     host: ENC(ZcXx0LXB7u1YaCEwiGLJa2Nkr3ARs6Xl)
     password: ENC(YpdLqa+kzbGC7I3gemW0CDaifGforTz5)
+    # 本地
+#    host: ENC(T1a1gX6ev5F3bLFuDHUwMfLvPRXseOD1)
+#    password: ENC(tKqza7A+KbyJH4SEakS1NCmIzkb+HIwG)
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
   configuration:
