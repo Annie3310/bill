@@ -71,6 +71,9 @@
 | greaterThan | 金额大于某值 | 否 | 不能为负数, 且只能有 2 位小数 |
 | lessThan | 金额小于某值 | 否 | 不能为负数, 且只能有 2 位小数 |
 
+### rollback (Put)
+回滚该账户的最后一次交易记录
+
 ## Account 接口
 
 接口 URL: localhost:8080/account

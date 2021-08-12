@@ -39,4 +39,11 @@ public interface BillService {
      * @throws ServiceException 通用异常类
      */
     PublicResponse getSum(String userId) throws ServiceException;
+
+    /**
+     * 回滚上一条记录
+     * @param billDTO 用户 ID
+     * @return 是否回滚成功
+     */
+    PublicResponse rollback(BillDTO billDTO);
 }

@@ -63,7 +63,7 @@
         where user_id = #{userId}
     </select>
     <select id="getByName" resultType="me.wjy.bill.pojo.po.AccountDO">
-        select name
+        select name, balance
         from account
         where name = #{name}
           and user_id = #{userId}

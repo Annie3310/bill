@@ -17,12 +17,14 @@ public enum BillResponseEnum {
     GET_SUM_SUCCESS("00000", "获取总合成功"),
     GET_LIST_SUCCESS("00000", "筛选成功"),
     GET_DETAILS_SUCCESS("00000", "获取详情成功"),
+    ROLLBACK_SUCCESS("00000","回滚成功"),
     INCOME_FAIL("410", "收入失败"),
     EXPENSE_FAIL("411", "支出失败"),
     TRANSFER_FAIL("412", "转账失败"),
     GET_PAID_FAIL("413", "收工资失败"),
     GET_SUM_FAIL("414", "获取总合失败"),
-    GET_DETAILS_FAIL("416", "获取详情失败");
+    GET_DETAILS_FAIL("416", "获取详情失败"),
+    ROLLBACK_FAIL("417","回滚失败");
 
     BillResponseEnum(String responseCode, String message) {
         this.message = message;

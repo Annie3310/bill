@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class BillDO{
     Long id;
+    String userId;
     String uuid;
     Double money;
     String description;

@@ -25,4 +25,18 @@ public interface BillMapper {
      * @return 找到的记录
      */
     List<BillDO> filter(FilterDTO filterDTO);
+
+    /**
+     * 按需更新
+     * @param billDO 更新内容
+     * @return 受影响的行数
+     */
+    Integer update(BillDO billDO);
+
+    /**
+     * 返回最后一条记录
+     * @param userId 用户 ID
+     * @return 最后一条账单记录
+     */
+    BillDO selectLast(String userId);
 }

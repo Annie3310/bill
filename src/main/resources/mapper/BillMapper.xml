@@ -34,6 +34,35 @@
         #{money},
         #{userId})
     </insert>
+    <update id="update" parameterType="me.wjy.bill.pojo.po.BillDO">
+        update bill
+        <trim prefix="set" suffixOverrides=",">
+            <if test="description != null">
+                description = #{description}
+            </if>
+            <if test="money != null">
+                money = #{money}
+            </if>
+            <if test="account != null">
+                account = #{account}
+            </if>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted}
+            </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and">
+            user_id = #{userId} and
+            <if test="id != null">
+                id = #{id} and
+            </if>
+            <if test="uuid != null">
+                id = #{uuid} and
+            </if>
+        </trim>
+    </update>
     <select id="filter" parameterType="me.wjy.bill.pojo.dto.FilterDTO"
             resultType="me.wjy.bill.pojo.po.BillDO">
         select <include refid="bill_vo_column"></include>, deleted from bill
@@ -56,7 +85,15 @@
             <if test="lessThan != null">
                 and money &lt;= #{lessThan}
             </if>
-            and user_id = #{userId}
+            and user_id = #{userId} and deleted = 0
+            order by create_time desc
         </trim>
+    </select>
+    <select id="selectLast" resultType="me.wjy.bill.pojo.po.BillDO">
+        select money, account, type, id
+        from bill
+        where user_id = #{userId}
+        order by create_time desc
+        limit 1
     </select>
 </mapper>

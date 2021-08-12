@@ -51,4 +51,9 @@ public class BillController {
     public PublicResponse getBillList(@RequestBody @Validated FilterDTO filterDTO) throws ServiceException {
         return billService.filter(filterDTO);
     }
+    @GetUserId
+    @PutMapping("rollback")
+    public PublicResponse rollback(@RequestBody BillDTO billDTO) {
+        return billService.rollback(billDTO);
+    }
 }

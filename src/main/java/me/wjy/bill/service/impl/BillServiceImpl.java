@@ -7,9 +7,7 @@ import me.wjy.bill.enums.UUIDConfig;
 import me.wjy.bill.exception.ServiceException;
 import me.wjy.bill.mapper.AccountMapper;
 import me.wjy.bill.mapper.BillMapper;
-import me.wjy.bill.pojo.dto.BillDTO;
-import me.wjy.bill.pojo.dto.FilterDTO;
-import me.wjy.bill.pojo.dto.TransferDTO;
+import me.wjy.bill.pojo.dto.*;
 import me.wjy.bill.pojo.po.AccountDO;
 import me.wjy.bill.pojo.po.BillDO;
 import me.wjy.bill.pojo.vo.AccountVO;
@@ -226,6 +224,56 @@ public class BillServiceImpl implements BillService {
                         .append("条")
                         .toString())
                 .result(billVOList)
+                .build();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public PublicResponse rollback(BillDTO billDTO) {
+        String className = getClass().getName();
+        String userId = billDTO.getUserId();
+        /*
+        流程:
+            从账单中取出最后一条记录 --> 在账户表中找出最后一条记录所使用的账户 --> 获取最后一条账单的类型 (收入 1 / 支出 0) --> 收入则减去账单中的金额, 反之
+            --> 更新账户 --> 将最后一条记录更新为已删除 (deleted = 1)
+         */
+        // 从账单中取出最后一条记录
+        BillDO lastOne = billMapper.selectLast(userId);
+        if (lastOne == null) {
+            logger.warn("{}.rollback: 未找到最后一条记录, 数据库返回了 null", className);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录", null);
+        }
+        String accountName = lastOne.getAccount();
+        AccountDTO accountDTO = AccountDTO.builder().name(accountName).build();
+        accountDTO.setUserId(userId);
+        // 在账户表中找出最后一条记录所使用的账户
+        AccountDO accountDO = accountMapper.getByName(accountDTO);
+        if (accountDO == null) {
+            logger.warn("{}.rollback: 未找到最后一条记录所对应的账户信息, 数据库返回了 null", className);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录对应的账户信息", null);
+        }
+        // 获取最后一条账单的类型 (收入 1 / 支出 0) --> 收入则减去账单中的金额, 反之
+        AccountUpdateDTO accountUpdateDTO = AccountUpdateDTO.builder().oldName(accountName).build();
+        accountUpdateDTO.setUserId(userId);
+        accountUpdateDTO.setBalance(lastOne.getType() == 1 ? (accountDO.getBalance() - lastOne.getMoney()) : (accountDO.getBalance() + lastOne.getMoney()));
+        // 更新账户
+        Integer updateAccountI = accountMapper.updateAccount(accountUpdateDTO);
+        if (updateAccountI < 1) {
+            logger.warn("{}.rollback: 账户未更新成功, 数据库返回了 {}", className, updateAccountI);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账户未更新成功", null);
+        }
+        BillDO billDO = BillDO.builder().deleted(1).userId(userId).id(lastOne.getId()).build();
+        // 将最后一条记录更新为已删除 (deleted = 1)
+        Integer updateBillI = billMapper.update(billDO);
+        logger.info("{}.rollback: 执行账单回滚, 数据库执行记录数: {}",className, updateBillI);
+        if (updateBillI < 1) {
+            logger.warn("{}.rollback: 账单回滚失败, 数据库未执行成功", className);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "回滚失败", null);
+        }
+        return PublicResponse
+                .builder()
+                .code(BillResponseEnum.ROLLBACK_SUCCESS.getResponseCode())
+                .message(BillResponseEnum.ROLLBACK_SUCCESS.getMessage())
                 .build();
     }
 
