@@ -5,6 +5,7 @@
 可以使用快捷指令来做该接口的客户端, 具体功能在接口描述中.
 
 ## 已知问题
+
 - 因为使用 JWT 做身份验证, 所以修改密码后原 Token 还可以继续使用
 - 未使用 HTTPS, Token 在传输过程中可以被拦截, 获取到 Token 的人可以随意修改账户信息, 但是不可以修改密码及用户名
 - 由上一点, 在获取 Token 时需要传密码, 所以并不安全
@@ -72,6 +73,7 @@
 | lessThan | 金额小于某值 | 否 | 不能为负数, 且只能有 2 位小数 |
 
 ### rollback (Put)
+
 回滚该账户的最后一次交易记录
 
 ## Account 接口
@@ -156,14 +158,16 @@ account 表 (账户表)
 ```sql
 CREATE TABLE `account`
 (
-    `id`      int         NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
-    `name`    varchar(20) NOT NULL COMMENT '账户名',
-    `balance` double(12, 2
-) NOT NULL DEFAULT '0.00' COMMENT '余额',
-  `user_id` varchar(255) NOT NULL COMMENT '用户 ID',
-  PRIMARY KEY (`id`),
-  KEY `Idx_userId` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    `id`      int           NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
+    `name`    varchar(20)   NOT NULL COMMENT '账户名',
+    `balance` double(12, 2) NOT NULL DEFAULT '0.00' COMMENT '余额',
+    `user_id` varchar(255)  NOT NULL COMMENT '用户 ID',
+    PRIMARY KEY (`id`),
+    KEY `Idx_userId` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 55
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci
 ```
 
 bill 表 (账单表)
@@ -179,12 +183,15 @@ CREATE TABLE `bill`
     `description` varchar(100) NOT NULL DEFAULT '' COMMENT '账单备注',
     `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更改时间',
-    `deleted`     tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已删除',
+    `deleted`     tinyint(1)   NOT NULL DEFAULT '0' COMMENT '是否已删除',
     `user_id`     varchar(255) NOT NULL,
     PRIMARY KEY (`id`),
-    KEY           `bill_uuid_index` (`uuid`),
-    KEY           `bill__userId_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    KEY `bill_uuid_index` (`uuid`),
+    KEY `bill__userId_index` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 151
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci
 ```
 
 user 表 (用户表)
@@ -198,6 +205,9 @@ CREATE TABLE `user`
     `password` varchar(255) NOT NULL,
     `salt`     bigint       NOT NULL COMMENT 'salt 值',
     PRIMARY KEY (`id`),
-    KEY        `Idx_userId` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+    KEY `Idx_userId` (`user_id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 24
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci
 ```

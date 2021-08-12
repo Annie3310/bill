@@ -93,6 +93,7 @@
         select money, account, type, id
         from bill
         where user_id = #{userId}
+        and deleted = 0
         order by create_time desc
         limit 1
     </select>

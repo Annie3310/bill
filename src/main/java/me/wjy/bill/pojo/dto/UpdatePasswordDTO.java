@@ -15,11 +15,11 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class UpdatePasswordDTO extends BaseDTO{
-    @NotNull(message = "输入的密码不能为空")
+    @NotNull(message = "旧密码不能为空")
     @Size(message = "密码长度应该在 8 到 20 之间", max = 20, min = 8)
     String oldPassword;
 
-    @NotNull(message = "输入的密码不能为空")
+    @NotNull(message = "新密码不能为空")
     @Size(message = "密码长度应该在 8 到 20 之间", max = 20, min = 8)
     String newPassword;
 }

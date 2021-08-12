@@ -53,7 +53,7 @@ public class BillController {
     }
     @GetUserId
     @PutMapping("rollback")
-    public PublicResponse rollback(@RequestBody BillDTO billDTO) {
+    public PublicResponse rollback(BillDTO billDTO) {
         return billService.rollback(billDTO);
     }
 }
