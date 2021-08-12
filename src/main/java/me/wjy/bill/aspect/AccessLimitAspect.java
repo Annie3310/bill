@@ -28,13 +28,14 @@ public class AccessLimitAspect {
     }
 
 
-    @Pointcut("execution(* me.wjy.bill.controller.*.*(..))")
-    public void limit() {
+    @Pointcut("execution(* me.wjy.bill.controller.*.*(..)) && !execution(* me.wjy.bill.controller.UserController.getToken(..))")
+    public void interfaceLimit() {
     }
 
-    ;
+    @Pointcut("execution(* me.wjy.bill.controller.UserController.getToken(..))")
+    public void getTokenLimit(){}
 
-    @Before("limit()")
+    @Before("interfaceLimit()")
     public void accessLimit(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
@@ -57,4 +58,6 @@ public class AccessLimitAspect {
             }
         }
     }
+
+
 }
