@@ -9,6 +9,10 @@ spring:
     url: ENC(7Wvqc1NRK9VJZvArxt/X+Y3xyuB3Do4vfq0TltaxN7zPjy1PzPAZ2I2+YoZIMcS+YjLTKK+2udeSZ/1BTxGDgpT9zUXkXWvl6SBkUFOtFjDvo8fdtqOx3gX+ZOIT/enC2b+8d/3/9/1TXeOtnuxQdA==)
     username: ENC(W2W7MkYuuCa1/qhR4Gvzaw==)
     password: ENC(NOZbMSQVBbXBFULwvXGRoST+hU+RJV4M)
+  redis:
+    database: 4
+    host: ENC(ZcXx0LXB7u1YaCEwiGLJa2Nkr3ARs6Xl)
+    password: ENC(YpdLqa+kzbGC7I3gemW0CDaifGforTz5)
 mybatis:
   mapper-locations: classpath*:mapper/*.xml
   configuration:

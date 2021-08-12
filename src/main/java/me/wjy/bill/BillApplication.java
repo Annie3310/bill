@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan
 @EnableTransactionManagement
 public class BillApplication {
+
+    // TODO 封装 Redis
+
     public static void main(String[] args) {
         SpringApplication.run(BillApplication.class, args);
     }
