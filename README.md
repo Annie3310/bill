@@ -180,17 +180,17 @@ CREATE TABLE `bill`
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT '自增主键',
     `uuid`        varchar(129) NOT NULL COMMENT '查询用唯一 uuid',
-    `type`        tinyint      NOT NULL DEFAULT '0' COMMENT '账单类型',
+    `type`        tinyint      NOT NULL DEFAULT '0' COMMENT '0: 支出: 1: 收入',
     `money`       double       NOT NULL COMMENT '金额',
-    `account`     varchar(20)           DEFAULT 'wechat' COMMENT '账单账户',
+    `account`     varchar(20)           COMMENT '账单账户',
     `description` varchar(100) NOT NULL DEFAULT '' COMMENT '账单备注',
     `create_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time` datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更改时间',
-    `deleted`     tinyint(1)   NOT NULL DEFAULT '0' COMMENT '是否已删除',
+    `deleted`     tinyint(1)   NOT NULL DEFAULT '0' COMMENT '0: 未删除, 1: 已删除',
     `user_id`     varchar(255) NOT NULL,
     PRIMARY KEY (`id`),
     KEY `bill_uuid_index` (`uuid`),
-    KEY `bill__userId_index` (`user_id`)
+    KEY `bill_userId_index` (`user_id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 151
   DEFAULT CHARSET = utf8mb4
