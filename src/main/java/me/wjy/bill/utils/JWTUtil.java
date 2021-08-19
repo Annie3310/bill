@@ -74,7 +74,7 @@ public class JWTUtil {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "Token 认证失败", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "Token 认证失败");
         }
         return (String) body.get("id");
     }

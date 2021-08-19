@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
+ * 验证密码格式, 是否有空格
  * @author 王金义
  * @date 2021/8/11
  * {@link me.wjy.bill.annotation.VerifySpace}
@@ -31,13 +32,13 @@ public class PasswordSpaceAspect {
             if (arg instanceof UserDTO) {
                 boolean contains = ((UserDTO) arg).getPassword().contains(" ");
                 if (contains) {
-                    throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "密码中不可以包含空格", null);
+                    throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "密码中不可以包含空格");
                 }
             }
             if (arg instanceof UpdatePasswordDTO) {
                 boolean contains = ((UpdatePasswordDTO) arg).getNewPassword().contains(" ");
                 if (contains) {
-                    throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "密码中不可以包含空格", null);
+                    throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "密码中不可以包含空格");
                 }
             }
         }

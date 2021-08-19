@@ -19,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 获取 Token 中的 userId
  * @author 王金义
  * @date 2021/8/3
  * {@link me.wjy.bill.annotation.GetUserId}
@@ -46,11 +47,11 @@ public class PublicControllerAspect {
         if (token != null) {
             id = JWTUtil.checkToken(token);
         } else {
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未携带 token", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未携带 token");
         }
         if (id == null) {
             logger.warn(className + "." + methodName + "Token 验证未通过");
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "token 不正确", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "token 不正确");
         }
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {

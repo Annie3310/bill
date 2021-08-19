@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
         String className = getClass().getName();
         if (userDTO.getUserId() == null || userDTO.getPassword() == null) {
             logger.warn("{}.getUser 未提供用户名或密码", className);
-            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户名或密码未输入", null);
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户名或密码未输入");
         }
         logger.info("getUser 获取用户");
         UserDO user = userMapper.getUser(userDTO.getUserId());
@@ -47,8 +47,7 @@ public class UserServiceImpl implements UserService {
             logger.warn("{}.getUser 未获取到用户", className);
             throw new ServiceException(
                     ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode()
-                    , "用户不存在"
-                    , null);
+                    , "用户不存在");
         }
         String userDTOPassword = encryptedPassword(userDTO.getPassword(), user.getSalt());
         String userPassword = user.getPassword();
@@ -56,8 +55,7 @@ public class UserServiceImpl implements UserService {
             logger.warn("{}.getUser 用户名或密码错误",className);
             throw new ServiceException(
                     ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode()
-                    , "认证失败, 用户名或密码不正确"
-                    , null);
+                    , "认证失败, 用户名或密码不正确");
         }
         return user;
     }
@@ -67,17 +65,17 @@ public class UserServiceImpl implements UserService {
         String className = getClass().getName();
         if (userDTO.getName() == null) {
             logger.warn("{}.updateName: 用户未输入要修改的用户名", className);
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未输入要修改的用户名", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未输入要修改的用户名");
         }
         if (verifyPassword(userDTO)) {
             logger.warn("{}.updatePassword: 用户提供的密码不正确, 修改用户名失败", className);
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "认证失败, 输入的密码不正确", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "认证失败, 输入的密码不正确");
         }
         userDTO.setPassword(null);
         Integer update = userMapper.update(userDTO);
         if (update < 1) {
             logger.warn("{}.updateName: 用户名未修改成功, 数据库执行结果不为 1", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功");
         }
         return PublicResponse
                 .builder()
@@ -91,7 +89,7 @@ public class UserServiceImpl implements UserService {
         String className = getClass().getName();
         if (updatePasswordDTO.getNewPassword() == null) {
             logger.warn("{}.updatePassword: 用户未输入要修改的密码", className);
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未输入要修改的密码", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未输入要修改的密码");
         }
         UserDTO userDTO = UserDTO
                 .builder()
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setUserId(updatePasswordDTO.getUserId());
         if (verifyPassword(userDTO)) {
             logger.warn("{}.updatePassword: 用户提供的密码不正确, 修改密码失败", className);
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "认证失败, 输入的密码不正确", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "认证失败, 输入的密码不正确");
         }
         HashMap<String, String> saltAndPassword = getSaltAndPassword(updatePasswordDTO.getNewPassword());
         userDTO.setPassword(saltAndPassword.get("password"));
@@ -109,7 +107,7 @@ public class UserServiceImpl implements UserService {
         logger.info("{}.updatePassword: 更新密码: {}",className, update);
         if (update < 1) {
             logger.warn("{}.updatePassword: 密码未修改成功, 数据库执行结果不为 1", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "修改未成功");
         }
         return PublicResponse
                 .builder()
@@ -124,7 +122,7 @@ public class UserServiceImpl implements UserService {
         String className = getClass().getName();
         if (userDTO.getName() == null) {
             logger.warn("{}.register: 用户未输入 name, 信息不完整", className);
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "用户输入的 name 为空", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "用户输入的 name 为空");
         }
         userDTO.setUserId(UUIDUtil.getUUID(UUIDConfig.UUID_LEN));
         HashMap<String, String> saltAndPassword = getSaltAndPassword(userDTO.getPassword());
@@ -134,7 +132,7 @@ public class UserServiceImpl implements UserService {
         logger.info("{}.register: 新增用户: {}",className, i);
         if (i == null || i < 1) {
             logger.warn("{}.register: 未注册成功, 数据库执行结果不为 1", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未成功注册", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未成功注册");
         }
         return PublicResponse
                 .builder()

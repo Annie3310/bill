@@ -47,7 +47,7 @@ public class BillServiceImpl implements BillService {
         sumDetails = accountMapper.getSumDetails(userId);
         if (sumDetails.isEmpty()) {
             logger.warn("getSum 获取账户余额失败: {}", sumDetails);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到账户详细信息", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未获取到账户详细信息");
         }
         Double sum = 0D;
         Map<String, Double> detailsMap = new HashMap<>(16);
@@ -74,7 +74,7 @@ public class BillServiceImpl implements BillService {
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse income(BillDTO billDTO) throws ServiceException {
         if (isAccountNotExist(billDTO.getUserId(), billDTO.getAccount())) {
-            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户");
         }
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
         billDTO.setType(BillTypeEnum.INCOME.getType());
@@ -86,11 +86,11 @@ public class BillServiceImpl implements BillService {
             effectiveRowsOfAccount = accountMapper.plusTo(billDTO);
         } else {
             logger.warn("income 生成账单失败: {}", effectiveRowsOfBill);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单添加失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单添加失败");
         }
         if (effectiveRowsOfAccount <= 0) {
             logger.warn("income 向账户添加金额失败: {}", effectiveRowsOfAccount);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "交易执行失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "交易执行失败");
         }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.INCOME_SUCCESS.getMessage());
         return PublicResponse.builder()
@@ -109,7 +109,7 @@ public class BillServiceImpl implements BillService {
     @Transactional(rollbackFor = Exception.class)
     public PublicResponse expense(BillDTO billDTO) throws ServiceException {
         if (isAccountNotExist(billDTO.getUserId(), billDTO.getAccount())) {
-            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户", null);
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "用户 '" + billDTO.getUserId() + "' 没有该账户");
         }
         billDTO.setUuid(UUIDUtil.getUUID(UUID_LENGTH));
         logger.info("expense 开始生成账单");
@@ -120,11 +120,11 @@ public class BillServiceImpl implements BillService {
             effectiveRowsOfAccount = accountMapper.minusFrom(billDTO);
         } else {
             logger.warn("expense 生成账单失败: {}", effectiveRowsOfBill);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单添加失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账单添加失败");
         }
         if (effectiveRowsOfAccount <= 0) {
             logger.warn("expense 从账户转出失败: {}", effectiveRowsOfAccount);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "交易执行失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "交易执行失败");
         }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.EXPENSE_SUCCESS.getMessage());
         return PublicResponse.builder()
@@ -149,10 +149,10 @@ public class BillServiceImpl implements BillService {
         BillDTO to = map.get("to");
         // 判重和判空
         if (Objects.equals(from.getAccount(), to.getAccount())) {
-            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "两个请求账户相同", null);
+            throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "两个请求账户相同");
         }
         if (isAccountNotExist(transferDTO.getUserId(), from.getAccount(), to.getAccount())) {
-            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未找到账户", null);
+            throw new ServiceException(ResponseCodeEnum.USER_AUTH_FAIL_ERROR.getErrorCode(), "未找到账户");
         }
         // 账单插入是否生效
         logger.info("transfer 开始生成转账 From 账单");
@@ -162,7 +162,7 @@ public class BillServiceImpl implements BillService {
         boolean isInsertFail = effectiveRowsOfFrom < 1 || effectiveRowsOfTo < 1;
         if (isInsertFail) {
             logger.warn("transfer 生成账单失败: 'From' = {}, 'To' = {}", effectiveRowsOfFrom, effectiveRowsOfTo);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "添加账单失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "添加账单失败");
         }
         logger.info("transfer 开始进行转账");
         int effectiveRowsOfAccountFrom = accountMapper.minusFrom(from);
@@ -170,7 +170,7 @@ public class BillServiceImpl implements BillService {
         boolean isTransferFail = effectiveRowsOfAccountFrom < 1 || effectiveRowsOfAccountTo < 1;
         if (isTransferFail) {
             logger.warn("transfer 转账失败: 'From' = {}, 'To' = {}", effectiveRowsOfAccountFrom, effectiveRowsOfAccountTo);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "转账失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "转账失败");
         }
         StringBuilder stringBuilder = new StringBuilder(BillResponseEnum.TRANSFER_SUCCESS.getMessage());
         String description = transferDTO.getDescription();
@@ -197,7 +197,7 @@ public class BillServiceImpl implements BillService {
         lt = filterDTO.getLessThan();
         if (gt != null && lt != null) {
             if (lt < gt) {
-                throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误", null);
+                throw new ServiceException(ResponseCodeEnum.USER_REQUEST_PARAM_ERROR.getErrorCode(), "数字区间错误");
             }
         }
         LocalDate startDate = filterDTO.getStartDate();
@@ -241,7 +241,7 @@ public class BillServiceImpl implements BillService {
         BillDO lastOne = billMapper.selectLast(userId);
         if (lastOne == null) {
             logger.warn("{}.rollback: 未找到最后一条记录, 数据库返回了 null", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录");
         }
         String accountName = lastOne.getAccount();
         AccountDTO accountDTO = AccountDTO.builder().name(accountName).build();
@@ -250,7 +250,7 @@ public class BillServiceImpl implements BillService {
         AccountDO accountDO = accountMapper.getByName(accountDTO);
         if (accountDO == null) {
             logger.warn("{}.rollback: 未找到最后一条记录所对应的账户信息, 数据库返回了 null", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录对应的账户信息", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "未找到最后一条记录对应的账户信息");
         }
         // 获取最后一条账单的类型 (收入 1 / 支出 0) --> 收入则减去账单中的金额, 反之
         AccountUpdateDTO accountUpdateDTO = AccountUpdateDTO.builder().oldName(accountName).build();
@@ -260,7 +260,7 @@ public class BillServiceImpl implements BillService {
         Integer updateAccountI = accountMapper.updateAccount(accountUpdateDTO);
         if (updateAccountI < 1) {
             logger.warn("{}.rollback: 账户未更新成功, 数据库返回了 {}", className, updateAccountI);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账户未更新成功", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "账户未更新成功");
         }
         BillDO billDO = BillDO.builder().deleted(1).userId(userId).id(lastOne.getId()).build();
         // 将最后一条记录更新为已删除 (deleted = 1)
@@ -268,7 +268,7 @@ public class BillServiceImpl implements BillService {
         logger.info("{}.rollback: 执行账单回滚, 数据库执行记录数: {}",className, updateBillI);
         if (updateBillI < 1) {
             logger.warn("{}.rollback: 账单回滚失败, 数据库未执行成功", className);
-            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "回滚失败", null);
+            throw new ServiceException(ResponseCodeEnum.SYSTEM_EXECUTION_ERROR.getErrorCode(), "回滚失败");
         }
         return PublicResponse
                 .builder()

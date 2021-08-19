@@ -16,5 +16,4 @@ import lombok.NoArgsConstructor;
 public class ServiceException extends RuntimeException{
     private String errorCode;
     private String errorMessage;
-    private String stackTraceLog;
 }
