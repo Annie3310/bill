@@ -284,7 +284,6 @@ public class BillServiceImpl implements BillService {
                 .account(transferDTO.getFrom())
                 .description(description)
                 .money(money)
-                .type(BillTypeEnum.EXPENSE.getType())
                 .uuid(UUIDUtil.getUUID(UUID_LENGTH))
                 .build();
         from.setUserId(transferDTO.getUserId());
