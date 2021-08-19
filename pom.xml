@@ -10,7 +10,7 @@
     </parent>
     <groupId>me.wjy.bill</groupId>
     <artifactId>bill</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <name>bill</name>
     <description>Demo project for Spring Boot</description>
     <properties>
