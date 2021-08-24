@@ -22,7 +22,8 @@ public class JWTUtil {
     /**
      * 失效时间
      */
-    private static final Long EFFECTIVE_TIME = TimeUnit.HOURS.toMillis(2);
+    private static final Long EFFECTIVE_TIME_2_HOURS = TimeUnit.HOURS.toMillis(2);
+    private static final Long EFFECTIVE_TIME_1_MONTH = TimeUnit.DAYS.toMillis(31);
     /**
      * 签名算法
      */
@@ -57,7 +58,7 @@ public class JWTUtil {
         // 进行签名
         jwtBuilder.signWith(SIGNATURE_ALGORITHM, SIGNING_KEY);
         // 失效时间 要写在 claim 和 setClaim 后面, 否则会导致 token 直接过期
-        jwtBuilder.setExpiration(new Date(nowMillis + EFFECTIVE_TIME));
+        jwtBuilder.setExpiration(new Date(nowMillis + EFFECTIVE_TIME_2_HOURS));
 
         // 获取token字符串 并返回
         return jwtBuilder.compact();

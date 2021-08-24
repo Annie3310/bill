@@ -85,7 +85,8 @@
             <if test="lessThan != null">
                 and money &lt;= #{lessThan}
             </if>
-            and user_id = #{userId} and deleted = 0
+            and user_id = #{userId}
+            and deleted = 0
             order by create_time desc
         </trim>
     </select>

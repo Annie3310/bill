@@ -1,20 +1,17 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # 本地
-#    url: ENC(YtM8eOUx/ZstPau/Ovsrvp0yTWwNG5Q2IeZd3ha6hO6SnVWLwec97OcmTYdwrU4K70bxxRnc2iB9ixnxyoCINPRG6p2zEoEAdTWreCbJaLH+x5RNTrppwcZ434YyB8UGMPK9ub5hlZo=)
-#    username: ENC(6zCJB5ojsIhi552jSTHdwA==)
-#    password: ENC(PX31Oz6CWL9//cY1YFnV2STMJyS73TvT)
   # 远程
-    url: ENC(7Wvqc1NRK9VJZvArxt/X+Y3xyuB3Do4vfq0TltaxN7zPjy1PzPAZ2I2+YoZIMcS+YjLTKK+2udeSZ/1BTxGDgpT9zUXkXWvl6SBkUFOtFjDvo8fdtqOx3gX+ZOIT/enC2b+8d/3/9/1TXeOtnuxQdA==)
-    username: ENC(W2W7MkYuuCa1/qhR4Gvzaw==)
-    password: ENC(NOZbMSQVBbXBFULwvXGRoST+hU+RJV4M)
+    url: ENC(U3Zr/8fkpsPonzMK7+eeUngUR1Y2DVkCzfebp0/6k8uP8EJATFMq4YVKCWSibPJPDdSa7qwMyhXYJjQKHArQJuLcgit8HvMiu3/c/ewX84D7HoGPQNke2jcn3rau6gLNCDtGfAmdsmMZgfjAHPdbmP4Gz2KoL9ClMXhcRbJR08TfoIFMqPmXLw==)
+    username: ENC(/zPFH04W3sJlWGPdyERL+Q==)
+    password: ENC(o7sXZGXYlRXWFc8X8kCu4U2YtVHB4ELw)
   redis:
     database: 4
     # 远程
     host: ENC(ZcXx0LXB7u1YaCEwiGLJa2Nkr3ARs6Xl)
     password: ENC(YpdLqa+kzbGC7I3gemW0CDaifGforTz5)
     # 本地
+    port: 6380
 #    host: ENC(T1a1gX6ev5F3bLFuDHUwMfLvPRXseOD1)
 #    password: ENC(tKqza7A+KbyJH4SEakS1NCmIzkb+HIwG)
 mybatis:
