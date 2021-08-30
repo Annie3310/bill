@@ -46,7 +46,10 @@ public class AccessLimitAspect {
     }
 
 
-    @Pointcut("execution(* me.wjy.bill.controller.*.*(..)) && !execution(* me.wjy.bill.controller.UserController.getToken(..)) && !execution(* me.wjy.bill.controller.UserController.register(..))")
+    @Pointcut("execution(* me.wjy.bill.controller.*.*(..)) " +
+            "&& !execution(* me.wjy.bill.controller.UserController.getToken(..)) " +
+            "&& !execution(* me.wjy.bill.controller.UserController.register(..)) " +
+            "&& !execution(* me.wjy.bill.controller.PublicController.toProfilePage(..))")
     public void interfaceLimit() {
     }
 

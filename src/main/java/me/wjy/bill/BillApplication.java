@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class BillApplication {
 
     // TODO 封装 Redis
+    // TODO 使用 Nacos 动态设置 "/" 的跳转目录
 
     public static void main(String[] args) {
         SpringApplication.run(BillApplication.class, args);
